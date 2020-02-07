@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 # - About: Script for Backuping Database Files
 # - Version: 0.0.1
