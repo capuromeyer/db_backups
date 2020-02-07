@@ -6,10 +6,10 @@
 # - Author: Alejandro Capuro
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 
-
 echo "///////////////////////////////////////////////////////////////////////////////"
 echo "Daily Backup Script started at | $(date)"
-
+cd "$(dirname "$0")";
+WORKING_DIRECTORY=$PWD
 
 #Load config file
 PATH_TO_PREFLIGHT=$PWD/preflight.sh
