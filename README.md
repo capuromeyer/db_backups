@@ -33,7 +33,7 @@ AWS Secret Access Key [None]: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 More info about aws cli [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html)
 ### 2. Install S3cmd
  
-`# apt get install s3cmd`
+`# apt install s3cmd`
 
 Run as root
 `s3cmd --configure`
