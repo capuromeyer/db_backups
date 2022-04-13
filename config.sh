@@ -25,5 +25,5 @@ LOCAL_BACKUP_DIRECTORY=/Local_Backup
 S3_BUCKET=s3://your-bucket/
 
 # aws S3 Directory inside the Bucket
-# example /Backup_Directory
-S3_DIRECTORY=/S3_Backup_Directory
+# example Backup_Directory [without leading or trailing slash]
+S3_DIRECTORY=S3_Backup_Directory
