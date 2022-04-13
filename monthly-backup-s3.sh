@@ -52,7 +52,7 @@ cd $MONTHLY_BACKUP_DIRECTORY
 sudo find *.zip -mmin +$((60*24*548)) | xargs sudo rm -rfv
 echo "Old files removed"
 echo "Syncronizing Files with S3 Bucket ..."
-s3cmd sync --skip-existing --delete-removed $S3_DIRECTORY $S3_BUCKET
+s3cmd sync --skip-existing --delete-removed $LOCAL_BACKUP_DIRECTORY $S3_BUCKET$S3_DIRECTORY
 echo "Script finnished running at | $(date)"
 echo "///////////////////////////////////////////////////////////////////////////////"
 echo ""
