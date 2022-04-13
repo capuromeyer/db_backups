@@ -50,7 +50,7 @@ cd $DAILY_BACKUP_DIRECTORY
 sudo find *.zip -mtime +45 | xargs sudo rm -fRv
 echo "Old files removed"
 echo "Syncronizing Files with S3 Bucket ..."
-s3cmd sync --skip-existing --delete-removed $S3_DIRECTORY $S3_BUCKET
+s3cmd sync --skip-existing --delete-removed $LOCAL_BACKUP_DIRECTORY $S3_BUCKET$S3_DIRECTORY
 echo "Script finnished running at | $(date)"
 echo "///////////////////////////////////////////////////////////////////////////////"
 echo ""
