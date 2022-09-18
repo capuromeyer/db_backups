@@ -20,10 +20,10 @@ MARIA_PASSWORD='password'
 # Local Directory without trailing slash
 LOCAL_BACKUP_DIRECTORY=/Local_Backup
 
-# aws S3 Bucket with trailing slash
+# aws S3 Bucket [With trailing slash]
 # example s3://your-bucket/
 S3_BUCKET=s3://your-bucket/
 
-# aws S3 Directory inside the Bucket
-# example Backup_Directory [without leading or trailing slash]
-S3_DIRECTORY=S3_Backup_Directory
+# aws S3 Directory inside the Bucket [With trailing slash]
+# example   Backup_Directory/
+S3_DIRECTORY=S3_Backup_Directory/
