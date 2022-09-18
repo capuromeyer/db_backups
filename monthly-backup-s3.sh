@@ -1,7 +1,7 @@
 #!/bin/bash
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 # - About: Script that extract MYSQL/MARIADB DB and Back them up locally.
-# - Version: 0.0.1
+# - Version: 0.0.2
 # - Date: 05 Feb 2020
 # - Author: Alejandro Capuro
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
