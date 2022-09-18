@@ -27,7 +27,12 @@ do
         cd $TEMPORAL
         mes1=$(date +%m)
         mes0=$(($mes1 - 1))
-        NOW=$(date +%Y)-"$mes0"
+        if [ $mes1 -lt 10 ]
+                then
+                NOW=$(date +%Y)-"0$mes0"
+                else
+                NOW=$(date +%Y)-"$mes0"
+                fi
         DATABASE_FILE="${NOW}_${i}_backup.sql";
         DATABASE_FILE_ZIP="${DATABASE_FILE}.zip"
         sudo mysqldump -u 'root' -p'aleluyagod' $i > $DATABASE_FILE
