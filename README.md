@@ -133,7 +133,11 @@ The file will look like this; enter your username and password:
    MARIA_USER="your_user_mariadb_username"
    MARIA_PASSWORD="your_password_1234"
    ```
-
+Delete sample file.
+   ```bash
+   cd /tasks/db_backups
+   sudo rm -rfv .env.sample
+   ```
 ### 7. Set Execute Permission
 
 Give execution privileges to the script files.

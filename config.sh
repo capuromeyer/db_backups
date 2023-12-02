@@ -24,13 +24,13 @@ TTL_MINUTELY_BACKUP="60"
 # ttl in minutes
 # Removing old files (1 Days or Older)"
 # 1 day = 60*24*1
-TTL_HOURLY_BACKUP="2880"
+TTL_HOURLY_BACKUP="1440"
 
 # Daily
 # ttl in minutes
 # Removing old files (2 Days or Older)"
 # 2 days = 60*24*2
-TTL_DAILY_BACKUP=""
+TTL_DAILY_BACKUP="2880"
 
 # Weekly
 # ttl in minutes
