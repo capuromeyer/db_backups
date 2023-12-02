@@ -37,6 +37,7 @@ To use **db_backups**, follow these steps:
 ### 2. Install AWS CLI
 
 2.1. **Install the tool:**
+Run as root user.
    ```bash
    # apt install awscli
    ```
@@ -52,6 +53,7 @@ To use **db_backups**, follow these steps:
 ### 3. Install S3cmd
 
 3.1. **Install the tool:**
+Run as root user.
    ```bash
    # apt install s3cmd
    ```
