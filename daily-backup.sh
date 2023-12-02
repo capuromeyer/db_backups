@@ -44,7 +44,7 @@ do
         echo "-----------------------------------------------"
 done
 echo "======================================================="
-echo "In total $COUNTER_K databases has been backedup"
+echo "In total $COUNTER_K databases has been backed up"
 
 #Remove old Backups
 TTR=""
