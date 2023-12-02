@@ -1,8 +1,7 @@
 #!/bin/bash
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
-# - About: Script that extract MYSQL/MARIADB DB and Back them up locally.
-# - Version: 0.0.1
-# - Date: 05 Feb 2020
+# - Version: 0.0.3
+# - Date: Dec 2023
 # - Author: Alejandro Capuro
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 
@@ -17,6 +16,8 @@ TEMPORAL=$PWD/temporal
 PATH_TO_CONFIG=$PWD/config.sh
 
 source $PATH_TO_PREFLIGHT
+# Load environment variables from .env file
+source "$PWD/.env" || { echo "Error: Unable to load environment variables from .env"; exit 1; }
 COUNTER_K=0
 
 # For each Databse on the list, mysqldump and archive the file
@@ -44,12 +45,14 @@ do
 done
 echo "======================================================="
 echo "In total $COUNTER_K databases has been backuped"
+
 #Remove old Backups
-echo "Removing Old Files (2 Days or Older)"
+TTR=""
+TTR=$(echo "scale=1; $((TTL_HOURLY_BACKUP)) / (24 * 60)" | bc)
+echo "Removing Files ($TTR Days or older)"
 cd $HOURLY_BACKUP_DIRECTORY
-sudo find *.zip -mmin +$((60*24*2)) | xargs sudo rm -rfv
+sudo find *.zip -mmin +$((TTL_HOURLY_BACKUP)) | xargs sudo rm -rfv
 echo "Old files removed"
 echo "Script finnished running at | $(date)"
 echo "///////////////////////////////////////////////////////////////////////////////"
 echo ""
-

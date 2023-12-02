@@ -1,8 +1,7 @@
 #!/bin/bash
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
-# - About: Script that extract MYSQL/MARIADB DB and Back them up locally.
-# - Version: 0.0.1
-# - Date: 05 Feb 2020
+# - Version: 0.0.3
+# - Date: Dec 2023
 # - Author: Alejandro Capuro
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 
@@ -17,6 +16,8 @@ TEMPORAL=$PWD/temporal
 PATH_TO_CONFIG=$PWD/config.sh
 
 source $PATH_TO_PREFLIGHT
+# Load environment variables from .env file
+source "$PWD/.env" || { echo "Error: Unable to load environment variables from .env"; exit 1; }
 COUNTER_K=0
 
 # For each Databse on the list, mysqldump and archive the file
@@ -44,10 +45,13 @@ do
 done
 echo "======================================================="
 echo "In total $COUNTER_K databases has been backuped"
+
 #Remove old Backups
-echo "Removing old Files (45 Days or Older)"
+TTR=""
+TTR=$(echo "scale=1; $((TTL_DAILY_BACKUP)) / (24 * 60)" | bc)
+echo "Removing Files ($TTR Days or older)"
 cd $DAILY_BACKUP_DIRECTORY
-sudo find *.zip -mtime +45 | xargs sudo rm -fRv
+sudo find *.zip -mmin +$((TTL_DAILY_BACKUP)) | xargs sudo rm -rfv
 echo "Old files removed"
 echo "Syncronizing Files with S3 Bucket ..."
 s3cmd sync --skip-existing --delete-removed $LOCAL_BACKUP_DIRECTORY $S3_BUCKET$S3_DIRECTORY

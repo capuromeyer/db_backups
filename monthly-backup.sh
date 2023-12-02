@@ -1,8 +1,7 @@
 #!/bin/bash
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
-# - About: Script that extract MYSQL/MARIADB DB and Back them up locally.
-# - Version: 0.0.1
-# - Date: 05 Feb 2020
+# - Version: 0.0.3
+# - Date: Dec 2023
 # - Author: Alejandro Capuro
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 
@@ -27,10 +26,15 @@ do
         cd $TEMPORAL
         mes1=$(date +%m)
         mes0=$(($mes1 - 1))
-        NOW=$(date +%Y)-"$mes0"
+        if [ $mes1 -lt 10 ]
+                then
+                NOW=$(date +%Y)-"0$mes0"
+                else
+                NOW=$(date +%Y)-"$mes0"
+                fi
         DATABASE_FILE="${NOW}_${i}_backup.sql";
         DATABASE_FILE_ZIP="${DATABASE_FILE}.zip"
-        sudo mysqldump -u 'root' -p'aleluyagod' $i > $DATABASE_FILE
+        sudo mysqldump -u "$MARIA_USER" -p"$MARIA_PASSWORD" $i > $DATABASE_FILE
 
         # Compress database file
         zip $DATABASE_FILE_ZIP $DATABASE_FILE
@@ -46,11 +50,14 @@ do
 done
 echo "======================================================="
 echo "In total $COUNTER_K databases has been backuped"
+
 #Remove old Backups
-echo "Removing Files (1.5yrs or older)"
+TTR=""
+TTR=$(echo "scale=1; $((TTL_MONTHLY_BACKUP)) / (365 * 24 * 60)" | bc)
+echo "Removing Old Files ($TTR years or older)"
 cd $MONTHLY_BACKUP_DIRECTORY
-sudo find *.zip -mmin +$((60*24*548)) | xargs sudo rm -rfv
+sudo find *.zip -mmin +$((TTL_MONTHLY_BACKUP)) | xargs sudo rm -rfv
 echo "Old files removed"
 echo "Script finnished running at | $(date)"
-echo "///////////////////////////////////////////////////////////"
+echo "///////////////////////////////////////////////////////////////////////////////"
 echo ""
