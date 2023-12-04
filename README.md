@@ -195,7 +195,8 @@ Save the file.
 9.2 Cron jobs as root.
 
 Now, automate the script by creating cron jobs as root:
-`sudo nano crontab -e`
+
+`sudo crontab -e`
 
 Examples:
    ```bash
