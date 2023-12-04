@@ -1,4 +1,5 @@
 
+
 # db_backups
 # Welcome!
 
@@ -158,7 +159,44 @@ Manually run the script to test its functionality.
 
 ### 9. Cronjobs
 
-If you want to automate the process, set up cronjobs for desired backup frequencies. Examples:
+If you want to automate the process, set up cronjobs for desired backup frequencies. 
+
+9.1 Log Rotate
+Before configuring the cronjob, it's essential to set up proper logrotate configurations. This ensures that the script logs the output each time it runs.
+
+If you need guidance on logrotate, check out this quick tutorial: ( [logrotate tutorial](https://www.baeldung.com/linux/rotating-logs-logrotate) ).
+
+Our Example
+In our example the configuration of the logrorate is straight forward and easy as follows: 
+
+1. Navigate to logrotate directory
+`cd /etc/logrotate.d`
+
+2. Create the logrotate configuration file for our db_backups script using a text editor (e.g., nano):
+`sudo nano db-backup`
+
+3. Configure the logrotate file as follows:
+```
+/var/log/db-backups/* {
+    weekly
+    missingok
+    rotate 10
+    create
+    compress
+    notifempty
+    sharedscripts
+    postrotate
+    endscript
+}
+
+```
+Save the file. 
+
+9.2 Cron jobs as root.
+Now, automate the script by creating cron jobs as root:
+`sudo nano crontab -e`
+
+Examples:
    ```bash
    # Every 30 min DB Backup
    */30 * * * * /tasks/db_backups/minutely-backup-s3.sh >> /var/log/db-backups/01.minutely.log
@@ -175,6 +213,8 @@ If you want to automate the process, set up cronjobs for desired backup frequenc
    # Every Month at 01:07
    7 1 1 * * /tasks/db_backups/monthly-backup-s3.sh >> /var/log/db-backups/05.monthly.log
    ```
+
+Save the file.
 
 Note: The script automatically deletes old backups based on their type (weekly, monthly, hourly, etc.). To modify this parameter, edit it in the config.sh file.
 
