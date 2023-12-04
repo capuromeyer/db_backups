@@ -162,6 +162,7 @@ Manually run the script to test its functionality.
 If you want to automate the process, set up cronjobs for desired backup frequencies. 
 
 9.1 Log Rotate
+
 Before configuring the cronjob, it's essential to set up proper logrotate configurations. This ensures that the script logs the output each time it runs.
 
 If you need guidance on logrotate, check out this quick tutorial: ( [logrotate tutorial](https://www.baeldung.com/linux/rotating-logs-logrotate) ).
@@ -193,6 +194,7 @@ In our example the configuration of the logrorate is straight forward and easy a
 Save the file. 
 
 9.2 Cron jobs as root.
+
 Now, automate the script by creating cron jobs as root:
 `sudo nano crontab -e`
 
