@@ -192,6 +192,12 @@ In our example the configuration of the logrorate is straight forward and easy a
 ```
 Save the file. 
 
+4. Navigate to log directoy and create the db_backup sub-directory for our log files to live.
+
+   `cd /var/log`
+
+   `sudo mkdir db-backups`
+
 9.2 Cron jobs as root.
 
 Now, automate the script by creating cron jobs as root:
