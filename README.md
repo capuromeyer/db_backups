@@ -2,6 +2,12 @@
 # db_backups
 # Welcome!
 
+
+## Version
+v 0.9.0
+This is the final release of the legacy code. An entirely new structure has been developed for the next version. 
+
+
 ## About
 
 This repository houses a simple yet powerful BASH script designed to automate the creation of periodic database backups for MYSQL/MARIADB. These backups can be generated locally and seamlessly synchronized with an [AWS S3 Bucket](https://aws.amazon.com/s3/).
