@@ -11,7 +11,7 @@
 # Version: 0.1.0 (Installer version)
 #
 # Usage:
-#   curl -sSL https://raw.githubusercontent.com/capuromeyer/db_backups/jules/online_install.sh | sudo bash
+#   curl -sSL https://raw.githubusercontent.com/capuromeyer/db_backups/multidb-multproject-feature-codex/online_install.sh | sudo bash
 #
 # Notes:
 #   - Must be run as root or with sudo.
@@ -68,7 +68,7 @@ if [ ! -t 0 ]; then # Check if stdin (file descriptor 0) is not a terminal
     info "The script will proceed automatically after displaying the actions to be performed."
     info "If you prefer to confirm each step or review more carefully, please download the script"
     info "and run it directly: "
-    info "  1. curl -sSLO https://raw.githubusercontent.com/capuromeyer/db_backups/jules/online_install.sh"
+    info "  1. curl -sSLO https://raw.githubusercontent.com/capuromeyer/db_backups/multidb-multproject-feature-codex/online_install.sh"
     info "  2. chmod +x online_install.sh"
     info "  3. sudo ./online_install.sh"
     info "Proceeding with automatic installation in 3 seconds (Press Ctrl+C to abort)..."
@@ -94,10 +94,9 @@ echo "----------------------------------------"
 
 # --- Configuration ---
 REPO_URL="https://github.com/capuromeyer/db_backups.git"
-# It's generally better to clone a specific branch or tag for an install script
-# For now, assuming 'jules' branch from the repo, or 'main'/'master' for a release.
-# This should be updated to the correct branch once development on 'jules' is stable.
-REPO_BRANCH="jules"
+# It's generally better to clone a specific branch or tag for an install script.
+# Use the stable 'multidb-multproject-feature-codex' branch while development continues.
+REPO_BRANCH="multidb-multproject-feature-codex"
 
 SCRIPT_INSTALL_DIR="/usr/local/sbin/db_backups"
 CONFIG_INSTALL_DIR="/etc/db_backups"
@@ -212,30 +211,37 @@ STAGED_SAMPLE_CONFIG_PATH="$TMP_CLONE_DIR/staging_root/etc/db_backups/db_backups
 FINAL_SAMPLE_MANIFEST_PATH="$CONFIG_INSTALL_DIR/db_backups.conf.sample" # Renamed for clarity
 MAIN_MANIFEST_CONFIG_PATH="$CONFIG_INSTALL_DIR/db_backups.conf" # Renamed for clarity
 
-if [ ! -f "$STAGED_SAMPLE_CONFIG_PATH" ]; then
-    error_exit "Original sample configuration file '$STAGED_SAMPLE_CONFIG_PATH' not found in cloned repository."
-fi
-
-# Always copy/update the .sample file in /etc/db_backups/
-info "Ensuring latest sample configuration is available at $FINAL_SAMPLE_MANIFEST_PATH..."
-if cp "$STAGED_SAMPLE_CONFIG_PATH" "$FINAL_SAMPLE_MANIFEST_PATH"; then
-    info "Latest sample manifest file placed at $FINAL_SAMPLE_MANIFEST_PATH."
-    chmod 644 "$FINAL_SAMPLE_MANIFEST_PATH" # Make sample readable
+if [ -f "$STAGED_SAMPLE_CONFIG_PATH" ]; then
+    info "Ensuring latest sample configuration is available at $FINAL_SAMPLE_MANIFEST_PATH..."
+    if cp "$STAGED_SAMPLE_CONFIG_PATH" "$FINAL_SAMPLE_MANIFEST_PATH"; then
+        info "Latest sample manifest file placed at $FINAL_SAMPLE_MANIFEST_PATH."
+        chmod 644 "$FINAL_SAMPLE_MANIFEST_PATH" # Make sample readable
+    else
+        warn "Failed to copy sample manifest to $FINAL_SAMPLE_MANIFEST_PATH."
+    fi
 else
-    error_exit "Failed to copy sample manifest to $FINAL_SAMPLE_MANIFEST_PATH."
+    warn "Sample manifest '$STAGED_SAMPLE_CONFIG_PATH' not found in repository. Skipping copy."
 fi
 
 # Handle the main configuration file db_backups.conf
 if [ -f "$MAIN_MANIFEST_CONFIG_PATH" ]; then
     warn "Main manifest file '$MAIN_MANIFEST_CONFIG_PATH' already exists and was NOT overwritten."
-    info "The latest sample manifest is available at '$FINAL_SAMPLE_MANIFEST_PATH'."
-    info "Please review it for new options or changes and update your existing configuration manually if needed."
+    if [ -f "$FINAL_SAMPLE_MANIFEST_PATH" ]; then
+        info "The latest sample manifest is available at '$FINAL_SAMPLE_MANIFEST_PATH'."
+        info "Please review it for new options or changes and update your existing configuration manually if needed."
+    fi
 else
-    info "Creating main manifest file '$MAIN_MANIFEST_CONFIG_PATH' from the latest sample..."
-    if cp "$FINAL_SAMPLE_MANIFEST_PATH" "$MAIN_MANIFEST_CONFIG_PATH"; then
-        info "Main manifest file created. IMPORTANT: Please review '$MAIN_MANIFEST_CONFIG_PATH' and set up your project configurations."
+    info "Creating main manifest file '$MAIN_MANIFEST_CONFIG_PATH'..."
+    if [ -f "$FINAL_SAMPLE_MANIFEST_PATH" ]; then
+        if cp "$FINAL_SAMPLE_MANIFEST_PATH" "$MAIN_MANIFEST_CONFIG_PATH"; then
+            info "Main manifest file created from sample. IMPORTANT: Please review '$MAIN_MANIFEST_CONFIG_PATH' and set up your project configurations."
+        else
+            warn "Failed to create main manifest file from sample. Creating an empty manifest file instead."
+            touch "$MAIN_MANIFEST_CONFIG_PATH" || error_exit "Could not create '$MAIN_MANIFEST_CONFIG_PATH'"
+        fi
     else
-        error_exit "Failed to create main manifest file '$MAIN_MANIFEST_CONFIG_PATH' from sample."
+        warn "No sample manifest available. Creating empty manifest at '$MAIN_MANIFEST_CONFIG_PATH'."
+        touch "$MAIN_MANIFEST_CONFIG_PATH" || error_exit "Could not create '$MAIN_MANIFEST_CONFIG_PATH'"
     fi
 fi
 
