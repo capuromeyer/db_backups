@@ -1,235 +1,51 @@
-
 # db_backups
-# Welcome!
 
+A collection of Bash scripts to automate database backups with optional cloud synchronization. Supported databases include MySQL, MariaDB, PostgreSQL and MongoDB. Backups are organized by frequency (minutely, hourly, daily, weekly, monthly) and old archives are cleaned up automatically based on configurable TTL values.
 
-## Version
-v 0.9.0
-This is the final release of the legacy code. An entirely new structure has been developed for the next version. 
-
-
-## About
-
-This repository houses a simple yet powerful BASH script designed to automate the creation of periodic database backups for MYSQL/MARIADB. These backups can be generated locally and seamlessly synchronized with an [AWS S3 Bucket](https://aws.amazon.com/s3/).
-
-The script supports various backup frequencies, including Minute, Hourly, Daily, Weekly, and Monthly intervals, and incorporates an automatic cleanup feature to remove expired backups.
-
-## Dependencies
-
-The script relies on the following technologies:
-
-- AWS Account and S3 Bucket
-- BASH
-- AWS CLI
-- S3cmd
-- git
-- zip
-- bc
-
-AWS Account is essential as the database backups are stored on AWS cloud services. BASH is required to execute the script, AWS CLI is used to interact with S3 through commands, S3cmd provides additional functionalities not covered by AWS CLI, git is used for cloning the script onto your server, zip is used for compressing SQL files, and bc is employed for minor mathematical calculations.
+## Features
+- Local dumps compressed with `zip`
+- Optional upload to AWS S3 or compatible providers
+- Automatic cleanup of expired backups
+- Cron-friendly wrapper scripts for each frequency
+- Modular library structure for easy extension
 
 ## Installation
+Run the installer as root. It clones the repository, installs required packages (AWS CLI, s3cmd, zip, bc) and sets up directories under `/usr/local/sbin/db_backups` and `/etc/db_backups`.
 
-To use **db_backups**, follow these steps:
-
-### 1. Create your AWS Account and S3 Bucket
-
-1.1. **AWS (Amazon Web Services):**
-   - Visit [AWS](https://aws.amazon.com/) to create your account. New accounts typically include free tier services.
-   - After creating your account, establish a new S3 Bucket for your backups. AWS offers cost-effective pricing for **S3 Buckets** (cloud storage for your backups).
-   - Create a separate AWS user (apart from your main account) for accessing the S3 Bucket from the **db_backups** script.
-   - Generate user credentials (Access Key, ID Keys, etc.) through your AWS account. Numerous tutorials are available for assistance. Refer to AWS's [official documentation](https://docs.aws.amazon.com/s3/index.html?nc2=h_ql_doc_s3) for details.
-
-### 2. Install AWS CLI
-
-2.1. **Install the tool:**
-Run as root user.
-   ```bash
-   # apt install awscli
-   ```
-
-2.2. **Configuration:**
-   ```bash
-   # aws configure
-   ```
-   Provide your AWS credentials (Access Key and ID Keys) when prompted. For other parameters, it's safe to use the defaults by pressing Enter.
-
-   For more information about AWS CLI, check [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html).
-
-### 3. Install S3cmd
-
-3.1. **Install the tool:**
-Run as root user.
-   ```bash
-   # apt install s3cmd
-   ```
-
-3.2. **Configuration:**
-   ```bash
-   s3cmd --configure
-   ```
-   Provide your AWS Access Key ID and AWS Secret Access Key when prompted. Other default values for settings are typically sufficient; just press Enter.
-
-   For more information about S3cmd, check [here](https://s3tools.org/s3cmd).
-
-### 4. Install Remaining Dependencies
-
-4.1. **Install Zip:**
-   ```bash
-   $ sudo apt install zip
-   ```
-
-4.2. **Install Git:**
-   ```bash
-   $ sudo apt install git
-   ```
-
-4.3. **Install BC:**
-   ```bash
-   $ sudo apt install bc
-   ```
-
-### 5. Clone the Script
-
-5.1. **Script Directory:**
-   Create your local directory where the script will be saved.
-   ```bash
-   $ sudo mkdir -p /tasks/db_backups
-   ```
-
-5.2. **Script Clone:**
-   Clone the script from the cloud to your local server in the directory created.
-   ```bash
-   $ sudo git clone https://github.com/capuromeyer/db_backups.git /tasks/db_backups
-   ```
-
-5.3. **Local Backups Directory:**
-   Create another directory to store the actual database files.
-   ```bash
-   $ sudo mkdir /DB_Backups
-   ```
-
-### 6. Config File and Credentials File
-
-Navigate to the script directory and open the `config.sh` file to fill in the required data.
-
-Example:
-   ```bash
-   cd /tasks/db_backups
-   sudo nano config.sh
-   ```
-   Edit the config file with your requirements.
-
-Now create your credential file using the sample file; copy it with the name `.env`.
-
-For example:
-   ```bash
-   sudo cp .env.sample .env
-   ```
-
-Edit the new `.env` file with a text editor:
-   ```bash
-   sudo nano .env
-   ```
-
-The file will look like this; enter your username and password:
-   ```bash
-   # === Backup Script Configuration ===
-   # This file contains configuration values for the Backup Script.
-
-   # MySQL/MariaDB Database Configuration
-   MARIA_USER="your_user_mariadb_username"
-   MARIA_PASSWORD="your_password_1234"
-   ```
-Delete sample file.
-   ```bash
-   cd /tasks/db_backups
-   sudo rm -rfv .env.sample
-   ```
-### 7. Set Execute Permission
-
-Give execution privileges to the script files.
-   ```bash
-   $ cd /tasks/db_backups
-   $ sudo chmod +x *.sh
-   ```
-
-### 8. Test
-
-Manually run the script to test its functionality.
-   ```bash
-   $ cd /tasks/db_backups
-   $ sudo ./minutely-backup-s3.sh
-   ```
-
-### 9. Cronjobs
-
-If you want to automate the process, set up cronjobs for desired backup frequencies. 
-
-9.1 Log Rotate
-
-Before configuring the cronjob, it's essential to set up proper logrotate configurations. This ensures that the script logs the output each time it runs.
-
-If you need guidance on logrotate, check out this quick tutorial: ( [logrotate tutorial](https://www.baeldung.com/linux/rotating-logs-logrotate) ).
-
-Our Example
-In our example the configuration of the logrorate is straight forward and easy as follows: 
-
-1. Navigate to logrotate directory
-`cd /etc/logrotate.d`
-
-2. Create the logrotate configuration file for our db_backups script using a text editor (e.g., nano):
-`sudo nano db-backup`
-
-3. Configure the logrotate file as follows:
+```bash
+curl -sSL https://raw.githubusercontent.com/capuromeyer/db_backups/main/online_install.sh | sudo bash
 ```
-/var/log/db-backups/* {
-    weekly
-    missingok
-    rotate 10
-    create
-    compress
-    notifempty
-    sharedscripts
-    postrotate
-    endscript
-}
 
+After installation, review `/etc/db_backups/db_backups.conf` and the sample files in `/etc/db_backups/conf.d.sample`. Copy samples to `/etc/db_backups/conf.d/` and adjust for your projects.
+
+## Usage
+Run a backup manually with `run_backup.sh`:
+
+```bash
+sudo /usr/local/sbin/db_backups/run_backup.sh --frequency hourly
 ```
-Save the file. 
 
-4. Navigate to log directoy and create the db_backup sub-directory for our log files to live.
+For automated operation add cron jobs. Example:
 
-   `cd /var/log`
+```bash
+# Hourly backup
+1 * * * * /usr/local/sbin/db_backups/hourly.sh >> /var/log/db_backups/hourly.log
+```
 
-   `sudo mkdir db-backups`
+Wrapper scripts exist for all frequencies (`minutely.sh`, `daily.sh`, etc.).
 
-9.2 Cron jobs as root.
+## Uninstall
+To remove the tool while keeping existing backups and logs:
 
-Now, automate the script by creating cron jobs as root:
+```bash
+sudo /usr/local/sbin/db_backups/uninstall.sh
+```
 
-`sudo crontab -e`
+## Directory Layout
+- `/usr/local/sbin/db_backups/` – installed scripts and libraries
+- `/etc/db_backups/` – main manifest and project configs
+- `/var/backups/db_backups/` – default local backup location
+- `/var/log/db_backups/` – cron and tool logs
 
-Examples:
-   ```bash
-   # Every 30 min DB Backup
-   */30 * * * * /tasks/db_backups/minutely-backup-s3.sh >> /var/log/db-backups/01.minutely.log
-
-   # Every Hour DB Backup
-   1 * * * * /tasks/db_backups/hourly-backup-s3.sh >> /var/log/db-backups/02.hourly.log
-
-   # Every Day DB Backup at 04:03
-   3 4 * * * /tasks/db_backups/daily-backup-s3.sh >> /var/log/db-backups/03.daily.log
-
-   # Every Week on Monday at 00:02
-   2 0 * * MON /tasks/db_backups/weekly-backup-s3.sh >> /var/log/db-backups/04.weekly.log
-
-   # Every Month at 01:07
-   7 1 1 * * /tasks/db_backups/monthly-backup-s3.sh >> /var/log/db-backups/05.monthly.log
-   ```
-
-Save the file.
-
-Note: The script automatically deletes old backups based on their type (weekly, monthly, hourly, etc.). To modify this parameter, edit it in the config.sh file.
-
-> README file written with [StackEdit](https://stackedit.io/).
+## License
+See [LICENSE](LICENSE) for details.
