@@ -26,10 +26,10 @@ log_message() {
     local message="$2"
     # Direct all messages to standard output
     case "$level" in
-        INFO)    echo "[STORAGE_CLOUD]INFO $message" ;;
-        WARN)    echo "[STORAGE_CLOUD]WARN $message" ;;
-        ERROR)   echo "[STORAGE_CLOUD]ERROR $message" ;;
-        *)       echo "[STORAGE_CLOUD]UNKNOWN $message" ;; # Fallback for unknown levels
+        INFO)    echo "[STORAGE_CLOUD] INFO $message" ;;
+        WARN)    echo "[STORAGE_CLOUD] WARN $message" ;;
+        ERROR)   echo "[STORAGE_CLOUD] ERROR $message" ;;
+        *)       echo "[STORAGE_CLOUD] UNKNOWN $message" ;; # Fallback for unknown levels
     esac
 }
 
@@ -46,7 +46,10 @@ sync_to_cloud_s3() {
     local sync_command=""
     local sync_output=""
 
-    log_message INFO "Attempting to synchronize local directory '$local_source_dir' to cloud path '$cloud_target_path' using provider '$CLOUD_STORAGE_PROVIDER' via s3cmd."
+    echo ""
+    log_message INFO "Attempting to synchronize local directory via s3cmd."
+    echo "Local Directory: '$local_source_dir' | Cloud path: '$cloud_target_path' | Provider: '$CLOUD_STORAGE_PROVIDER'"
+    echo ""
 
     # Ensure AWS_CONFIG_FILE is set for root if it's not already (needed for cleanup_cloud_s3 later)
     export AWS_CONFIG_FILE="/root/.aws/config"
@@ -86,8 +89,12 @@ sync_to_cloud_s3() {
         log_message ERROR "s3cmd output: $sync_output"
         return 1
     else
+	echo ""
+        echo "s3cmd output: $sync_output"
+	echo "---------------------------"
         log_message INFO "Cloud synchronization completed successfully."
-        log_message INFO "s3cmd output: $sync_output"
+        echo "---------------------------"
+	echo ""
         return 0
     fi
 }
@@ -105,7 +112,10 @@ s3_upload_only_sync() {
     local upload_command=""
     local upload_output=""
 
-    log_message INFO "Attempting to upload new/modified files from '$local_source_dir' to cloud path '$cloud_target_path' using provider '$CLOUD_STORAGE_PROVIDER' via s3cmd --no-delete."
+    echo ""
+    log_message INFO "Attempting to upload new/modified files via s3cmd --no-delete."
+    echo "Local Directory: '$local_source_dir' | Cloud Path '$cloud_target_path' | Provider: '$CLOUD_STORAGE_PROVIDER' "
+    echo ""
 
     # Ensure AWS_CONFIG_FILE is set for root if it's not already (needed for cleanup_cloud_s3 later)
     export AWS_CONFIG_FILE="/root/.aws/config"
@@ -168,7 +178,10 @@ cleanup_cloud_s3() {
     local bucket_name="$(echo "$cloud_path" | sed 's/s3:\/\///' | cut -d'/' -f1)"
     local prefix_path="$(echo "$cloud_path" | sed 's/s3:\/\/[^/]*\///')"
 
-    log_message INFO "Starting cloud cleanup for path '$cloud_path' with retention '$retention_minutes' minutes and pattern '*.${file_extension}' using provider '$CLOUD_STORAGE_PROVIDER'."
+    echo ""
+    log_message INFO "Starting cloud cleanup using provider '$CLOUD_STORAGE_PROVIDER'."
+    echo "Path '$cloud_path' | Retention : '$retention_minutes' minutes | Pattern '*.${file_extension}' "
+    echo ""
 
     # Ensure AWS_CONFIG_FILE is set for root if it's not already
     export AWS_CONFIG_FILE="/root/.aws/config"

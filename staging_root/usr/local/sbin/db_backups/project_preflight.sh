@@ -671,7 +671,8 @@ run_all_project_preflight_checks() {
     local overall_project_status=0
 
     echo "----------------------------------------------------------------"
-    _log_project_message INFO "Starting preflight checks for project config: '$config_file_path' at $(date)"
+    _log_project_message INFO "Starting Preflight Checks Per Project"
+    echo "Project Config: '$config_file_path' at $(date)"
     echo "----------------------------------------------------------------"
     echo ""
 
@@ -787,10 +788,12 @@ run_all_project_preflight_checks() {
 
     echo "----------------------------------------------------------------"
     if [ "$_PROJECT_ERROR_FLAG" -eq 0 ]; then
-        _log_project_message INFO "All preflight checks for config '$config_file_path' completed SUCCESSFULLY."
+        _log_project_message INFO "All preflight checks for config '$config_file_path' "
+        echo "Completed SUCCESSFULLY."
         overall_project_status=0
     else
-        _log_project_message ERROR "Preflight checks for config '$config_file_path' FAILED. Please review logs above."
+        _log_project_message ERROR "Preflight checks for config '$config_file_path' "
+        echo "FAILED. Please review logs above."
         overall_project_status=1
     fi
     echo "----------------------------------------------------------------"

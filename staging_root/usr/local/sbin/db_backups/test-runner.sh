@@ -17,7 +17,7 @@ set -euo pipefail
 # -----------------------------------------------------------------------------
 ensure_root() {
     if [[ $EUID -ne 0 ]]; then
-        echo "[HOURLY_ERROR] This script must be run as root. Please rerun with sudo."
+        echo "[TESTER_ERROR] This script must be run as root. Please rerun with sudo."
         exit 1
     fi
 }
@@ -113,14 +113,14 @@ perform_root_check() {
 # Purpose : Source and run global preflight checks
 # -----------------------------------------------------------------------------
 perform_global_preflight() {
-    echo "[HOURLY_INFO] Performing global preflight checks..."
+    echo "[TESTER_INFO] Performing global preflight checks..."
     source "$PREFLIGHT_SCRIPT_PATH" || { echo "[ERROR_SOURCING] Failed to load preflight script."; exit 1; }
     perform_global_preflight_checks; status=$?
     if [[ $status -ne 0 ]]; then
-        echo "[HOURLY_ERROR] Global preflight checks failed (status: $status)."
+        echo "[TESTER_ERROR] Global preflight checks failed (status: $status)."
         exit 1
     fi
-    echo "[HOURLY_INFO] Global preflight checks passed."
+    echo "[TESTER_INFO] Global preflight checks passed."
     echo ""
 }
 
@@ -139,7 +139,7 @@ load_and_validate_manifest() {
     process_and_report_configs "$MAIN_MANIFEST_FILE"
     local rc=$?
     if (( rc != 0 )); then
-        echo "[HOURLY_INFO] No valid configuration files found. Nothing to backup."
+        echo "[TESTER_INFO] No valid configuration files found. Nothing to backup."
         exit 0
     fi
     echo "[MANIFEST] Valid configuration files found. Proceeding..."
@@ -215,7 +215,7 @@ load_and_validate_projects() {
     process_and_report_configs "$MAIN_MANIFEST_FILE"
     local rc=$?
     if (( rc != 0 )); then
-        echo "[HOURLY_INFO] No valid configuration files found. Nothing to backup."
+        echo "[TESTER_INFO] No valid configuration files found. Nothing to backup."
         exit 0
     fi
     echo "[MANIFEST] Valid configuration files found. Proceeding..."
@@ -231,13 +231,13 @@ load_and_validate_projects() {
 print_final_summary() {
     echo "-------------------------------------------------------------------------------"
     if [[ $overall_backup_status -eq 0 ]]; then
-        echo "[HOURLY_INFO] All projects for $CURRENT_FREQUENCY completed OK."
+        echo "[TESTER_INFO] All projects for $CURRENT_FREQUENCY completed OK."
     else
-        echo "[HOURLY_ERROR] Some projects failed in $CURRENT_FREQUENCY cycle."
+        echo "[TESTER_ERROR] Some projects failed in $CURRENT_FREQUENCY cycle."
     fi
-    echo "Hourly Backup Cycle finished."
+    echo "TESTER Backup Cycle finished."
     echo "==============================================================================="
-    echo "HOURLY Backup Process finished at | $(date)"
+    echo "TESTER Backup Process finished at | $(date)"
     echo "==============================================================================="
     exit $overall_backup_status
 }

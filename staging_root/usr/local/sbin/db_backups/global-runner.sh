@@ -7,7 +7,7 @@
 #          for the enabled projects.
 # Developed by: Jules (AI Assistant)
 # Copyright: (c) 2025 Alejandro Capuro. All rights reserved.
-# File Version: 20250717.180000
+# File Version: 20250721.210000 # Added detailed project frequency filtering report
 # Project Version: 1.0.0
 #
 # Usage: sudo ./global-runner.sh <frequency>
@@ -45,10 +45,10 @@ log_message() {
     local message="$2"
     # Direct all messages to standard output
     case "$level" in
-        INFO)    echo "[RUNNER] INFO $message" ;;
-        WARN)    echo "[RUNNER] WARN $message" ;;
-        ERROR)   echo "[RUNNER] ERROR $message" ;;
-        *)       echo "[RUNNER] UNKNOWN $message" ;; # Fallback for unknown levels
+        INFO)    echo "[GLOBAL RUNNER] INFO $message" ;;
+        WARN)    echo "[GLOBAL RUNNER] WARN $message" ;;
+        ERROR)   echo "[GLOBAL RUNNER] ERROR $message" ;;
+        *)       echo "[GLOBAL RUNNER] UNKNOWN $message" ;; # Fallback for unknown levels
     esac
 }
 
@@ -72,8 +72,8 @@ print_header() {
     echo ""
     echo "==============================================================================="
     echo ""
-    echo "          BACKUP PROCESS STARTED - Frequency: $(echo "$CURRENT_FREQUENCY" | tr '[:lower:]' '[:upper:]')"
-    echo "          Time: $(date)"
+    echo "           BACKUP PROCESS STARTED - Frequency: $(echo "$CURRENT_FREQUENCY" | tr '[:lower:]' '[:upper:]')"
+    echo "           Time: $(date)"
     echo ""
     echo "==============================================================================="
     echo ""
@@ -112,10 +112,10 @@ section_footer() {
 # Purpose : Source common utility and workflow libraries
 # -----------------------------------------------------------------------------
 source_libraries() {
-    log_message INFO "Sourcing common libraries..."
+    log_message INFO "Loading common libraries..."
     source "$LIB_DIR/utils.sh" || { log_message ERROR "Failed to source $LIB_DIR/utils.sh."; exit 1; }
     source "$LIB_DIR/workflow_utils.sh" || { log_message ERROR "Failed to source $LIB_DIR/workflow_utils.sh."; exit 1; }
-    
+
     # Source master_config_file_utils.sh and verify function availability
     source "$LIB_DIR/master_config_file_utils.sh" || { log_message ERROR "Failed to source $LIB_DIR/master_config_file_utils.sh"; exit 1; }
     if ! type -t detect_and_report_duplicates &> /dev/null; then
@@ -123,7 +123,8 @@ source_libraries() {
         exit 1
     fi
 
-    log_message INFO "Common libraries sourced."
+    echo "Common libraries loaded."
+    echo "proceeding ..."
     echo ""
 }
 
@@ -163,10 +164,11 @@ setup_environment() {
     # Create temporary files
     UNIQUE_CONFIG_FILES_TEMP_PATH=$(mktemp /tmp/unique_projects_XXXXXX.txt)
     FINAL_FILTERED_PROJECT_LIST_FILE=$(mktemp /tmp/final_filtered_projects_XXXXXX.txt)
-    log_message INFO "Temporary file for unique projects created at: '$UNIQUE_CONFIG_FILES_TEMP_PATH'"
-    log_message INFO "Temporary file for final filtered projects created at: '$FINAL_FILTERED_PROJECT_LIST_FILE'"
+    echo "Temporary file for unique projects created at: '$UNIQUE_CONFIG_FILES_TEMP_PATH'"
+    echo "Temporary file for final filtered projects created at: '$FINAL_FILTERED_PROJECT_LIST_FILE'"
 
-    log_message INFO "Environment setup complete for frequency: '$CURRENT_FREQUENCY'."
+    echo "Environment setup complete for frequency: '$CURRENT_FREQUENCY'."
+    echo "proceeding..."
     echo ""
 }
 
@@ -182,7 +184,8 @@ perform_global_preflight() {
         log_message ERROR "Global preflight checks failed (status: $status)."
         exit 1
     fi
-    log_message INFO "Global preflight checks passed."
+    echo "Global preflight checks passed."
+    echo "proceeding..."
     echo ""
 }
 
@@ -196,7 +199,7 @@ perform_global_preflight() {
 # Returns : 0 on success (at least one project enabled), 1 if no projects enabled or fatal error.
 # -----------------------------------------------------------------------------
 filter_projects_by_frequency() {
-    log_message INFO "Starting project filtering for frequency '$CURRENT_FREQUENCY'..."
+    echo "Starting project verifications for frequency '$CURRENT_FREQUENCY'..."
 
     # Ensure the master config file exists
     if [ ! -f "$MAIN_MANIFEST_FILE" ]; then
@@ -228,17 +231,26 @@ filter_projects_by_frequency() {
     local projects_skipped_count=0
     local projects_failed_to_source_count=0
 
+    # New arrays to store project names and their statuses for the detailed report
+    local -a filtered_project_names=()
+    local -a filtered_project_statuses=()
+
     # Clear the final filtered file before writing
     > "$FINAL_FILTERED_PROJECT_LIST_FILE"
 
     # 2. Iterate through the unique project paths and filter by frequency setting
     while IFS= read -r project_config_path; do
-        if [ -z "$project_config_path" ]; then
-            continue # Skip empty lines
+        # --- NEW: Skip empty lines and comment lines ---
+        local trimmed_path=$(echo "$project_config_path" | xargs) # Trim whitespace
+        if [[ -z "$trimmed_path" || "$trimmed_path" =~ ^# ]]; then
+            continue # Skip empty lines and comments without logging
         fi
-        total_projects_from_unique_list=$((total_projects_from_unique_list + 1))
-        local project_name=$(basename "$project_config_path")
+        # --- END NEW ---
 
+        total_projects_from_unique_list=$((total_projects_from_unique_list + 1))
+        local project_name=$(basename "$trimmed_path") # Use trimmed_path here
+
+        echo ""
         log_message INFO "Evaluating project '$project_name' for '$CURRENT_FREQUENCY' frequency..."
 
         # Temporarily source the project config file to check its frequency setting
@@ -247,9 +259,11 @@ filter_projects_by_frequency() {
         local freq_setting=""
         local temp_freq_var_name="BACKUP_FREQUENCY_${CURRENT_FREQUENCY_UPPERCASE}"
         # Source with redirection to /dev/null to suppress its output
-        if ! freq_setting=$( ( source "$project_config_path" >/dev/null 2>&1; echo "${!temp_freq_var_name:-}" ) ); then
-            log_message WARN "Failed to source project config '$project_config_path' to check frequency. Skipping project '$project_name'. Check syntax or permissions."
+        if ! freq_setting=$( ( source "$trimmed_path" >/dev/null 2>&1; echo "${!temp_freq_var_name:-}" ) ); then # Use trimmed_path here
+            log_message WARN "Failed to source project config '$trimmed_path' to check frequency. Skipping project '$project_name'. Check syntax or permissions."
             projects_failed_to_source_count=$((projects_failed_to_source_count + 1))
+            filtered_project_names+=("$project_name")
+            filtered_project_statuses+=("SKIPPED (Failed to Source)")
             continue
         fi
 
@@ -260,21 +274,48 @@ filter_projects_by_frequency() {
         fi
 
         if [ "$freq_setting" == "on" ]; then
-            log_message INFO "Project '$project_name' is ENABLED for '$CURRENT_FREQUENCY' frequency. Adding to final list."
-            echo "$project_config_path" >> "$FINAL_FILTERED_PROJECT_LIST_FILE"
+            echo "Project '$project_name' is ENABLED for '$CURRENT_FREQUENCY' frequency. Adding to final list."
+            echo "$trimmed_path" >> "$FINAL_FILTERED_PROJECT_LIST_FILE" # Use trimmed_path here
             projects_enabled_count=$((projects_enabled_count + 1))
+            filtered_project_names+=("$project_name")
+            filtered_project_statuses+=("ENABLED")
         elif [ "$freq_setting" == "off" ]; then
-            log_message INFO "Project '$project_name' is DISABLED for '$CURRENT_FREQUENCY' frequency. Skipping."
+            echo "Project '$project_name' is DISABLED for '$CURRENT_FREQUENCY' frequency. Skipping."
             projects_skipped_count=$((projects_skipped_count + 1))
+            filtered_project_names+=("$project_name")
+            filtered_project_statuses+=("DISABLED")
         else
             log_message WARN "Unknown frequency setting '$freq_setting' for 'BACKUP_FREQUENCY_${CURRENT_FREQUENCY_UPPERCASE}' in '$project_name'. Skipping."
             projects_skipped_count=$((projects_skipped_count + 1))
+            filtered_project_names+=("$project_name")
+            filtered_project_statuses+=("SKIPPED (Unknown Setting)")
         fi
     done < "$UNIQUE_CONFIG_FILES_TEMP_PATH"
 
-    log_message INFO "Project filtering complete."
-    log_message INFO "Summary: Projects from Unique List: $total_projects_from_unique_list, Enabled: $projects_enabled_count, Skipped: $projects_skipped_count, Failed to Source: $projects_failed_to_source_count"
     echo ""
+    echo "Projects filtering by frequency complete."
+    echo "proceeding..."
+    echo ""
+
+    # --- NEW: Detailed Project Frequency Filtering Report ---
+    echo "----------------------------------------------------------------"
+    echo "Project Frequency Filtering Report for: '$CURRENT_FREQUENCY'"
+    echo "----------------------------------------------------------------"
+    printf "%-50s | %s\n" "Project Name" "Frequency Status"
+    echo "----------------------------------------------------------------"
+
+    if [ ${#filtered_project_names[@]} -eq 0 ]; then
+        printf "%-50s | %s\n" "No projects evaluated for this frequency" "N/A"
+    else
+        for i in "${!filtered_project_names[@]}"; do
+            printf "%-50s | %s\n" "${filtered_project_names[$i]}" "${filtered_project_statuses[$i]}"
+        done
+    fi
+    echo "----------------------------------------------------------------"
+    echo "Total Evaluated: $total_projects_from_unique_list, Enabled: $projects_enabled_count, Disabled/Skipped: $((projects_skipped_count + projects_failed_to_source_count))"
+    echo "----------------------------------------------------------------"
+    echo ""
+    # --- END NEW ---
 
     if [ "$projects_enabled_count" -eq 0 ]; then
         log_message INFO "No projects are enabled for '$CURRENT_FREQUENCY' frequency. Nothing to backup for this run."
@@ -282,6 +323,11 @@ filter_projects_by_frequency() {
     fi
 
     log_message INFO "Final filtered project list saved to '$FINAL_FILTERED_PROJECT_LIST_FILE'."
+    echo ""
+    echo "Summary: Projects from Unique List: $total_projects_from_unique_list, Enabled: $projects_enabled_count, Skipped: $projects_skipped_count, Failed to Source: $projects_failed_to_source_count"
+    echo "Project filtering complete."
+    echo ""
+
     return 0
 }
 
@@ -302,9 +348,12 @@ run_project_processor() {
 
     if [ "$processor_exit_status" -eq 0 ]; then
         log_message INFO "All enabled projects processed successfully by project_list_processor.sh."
+        echo ""
         overall_backup_status=0
     else
         log_message ERROR "Some enabled projects encountered issues during processing by project_list_processor.sh (Exit Status: $processor_exit_status). Please check the logs above."
+        echo ""
+
         overall_backup_status=1
     fi
 
@@ -324,7 +373,9 @@ print_final_summary() {
     else
         log_message ERROR "Some enabled projects failed in $CURRENT_FREQUENCY cycle."
     fi
+    echo ""
     echo "$(echo "$CURRENT_FREQUENCY" | tr '[:lower:]' '[:upper:]') Backup Cycle finished."
+    echo ""
     echo "==============================================================================="
     echo "$(echo "$CURRENT_FREQUENCY" | tr '[:lower:]' '[:upper:]') Backup Process finished at | $(date)"
     echo "==============================================================================="
@@ -341,11 +392,11 @@ overall_backup_status=0
 # 1. Ensure we have root privileges before doing anything
 ensure_root
 
-# 2. Setup environment variables and parse arguments
-setup_environment "$@"
-
-# 3. Print the start banner with a timestamp for logging and visibility
+# 2. Print the start banner with a timestamp for logging and visibility
 print_header
+
+# 3. Setup environment variables and parse arguments
+setup_environment "$@"
 
 # 4. Load shared helper libraries (utils, workflow_utils, master_config_file_utils)
 source_libraries
@@ -356,7 +407,7 @@ perform_global_preflight
 section_footer "GLOBAL PREFLIGHT - System Checks Ends"
 
 # 6. Load and filter projects based on frequency settings
-section_heading "PROJECT FILTERING - Starting Project Selection for '$CURRENT_FREQUENCY'"
+section_heading "PROJECT VALIDATION - Starting Project validation for '$CURRENT_FREQUENCY'"
 if ! filter_projects_by_frequency; then # Renamed function call
     # If no projects are enabled for this frequency, exit successfully (nothing to do)
     # This check is important to differentiate between "no projects to process" and a "failure"
@@ -369,7 +420,7 @@ if ! filter_projects_by_frequency; then # Renamed function call
         exit 1
     fi
 fi
-section_footer "PROJECT FILTERING - Project Selection Ends"
+section_footer "PROJECT VALIDATION - Project validation Ends"
 
 # 7. Run the project list processor for the filtered projects
 section_heading "PROJECT PROCESSING - Starting Backup Execution for Enabled Projects"

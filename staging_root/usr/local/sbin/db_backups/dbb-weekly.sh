@@ -1,12 +1,12 @@
 #!/bin/bash
 # -----------------------------------------------------------------------------
-# Script: hourly.sh
+# Script:  dbb-weekly.sh
 # Purpose: Wrapper script for the hourly cronjob.
-#          Calls the global-runner.sh with 'hourly' frequency.
+#          Calls the global-runner.sh with 'weekly' frequency.
 # -----------------------------------------------------------------------------
 
 # Define the frequency for this specific wrapper script
-FREQUENCY="hourly"
+FREQUENCY="weekly"
 
 # Define the path to the global runner script
 GLOBAL_RUNNER_SCRIPT="/usr/local/sbin/db_backups/global-runner.sh"
@@ -28,9 +28,17 @@ sudo "$GLOBAL_RUNNER_SCRIPT" "$FREQUENCY"
 EXIT_STATUS=$?
 
 if [ $EXIT_STATUS -eq 0 ]; then
-    echo "Backup process for $FREQUENCY frequency completed successfully."
+    echo ""
+    echo "//////////////////////////////////////////////////////////////////////////////////////"
+    echo "Backup Grapper Process for $FREQUENCY frequency completed."
+    echo "______________________________________________________________________________________"
+    echo ""
 else
-    echo "Backup process for $FREQUENCY frequency failed. Please check logs for details."
+    echo ""
+    echo "//////////////////////////////////////////////////////////////////////////////////////"
+    echo "Backup Grapper Process for $FREQUENCY frequency failed. Please check logs for details."
+    echo "______________________________________________________________________________________"
+    echo ""
 fi
 
 exit $EXIT_STATUS
