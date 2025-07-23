@@ -581,10 +581,10 @@ sudo /usr/local/sbin/db_backups/uninstall.sh
 
 ## License & Copyright
 
-This project is licensed under the GPL v2 License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the GPL v3 License - see the [LICENSE](LICENSE) file for details.
 
 **Copyright © 2025 Alejandro Capuro Meyer**  
-All rights reserved. This software is provided under the terms of the GPL v2 license.
+All rights reserved. This software is provided under the terms of the GPL v3 license.
 
 **Author:** Alejandro Capuro Meyer  
 **Project Repository:** https://github.com/capuromeyer/db_backups
