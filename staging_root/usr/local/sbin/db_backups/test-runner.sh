@@ -11,7 +11,6 @@
 #              ChatGPT, Claude, Jules, Firebase, and others) under human
 #              guidance for architecture, logic design, and project direction.
 # File Version: 20250723.161300
-# Project Version: 1.0.0
 # Project Repository: https://github.com/capuromeyer/db_backups
 # Usage: sudo ./test-runner.sh
 #
