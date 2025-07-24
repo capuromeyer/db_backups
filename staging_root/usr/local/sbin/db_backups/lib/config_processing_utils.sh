@@ -11,7 +11,6 @@ set -euo pipefail
 #              ChatGPT, Claude, Jules, Firebase, and others) under human
 #              guidance for architecture, logic design, and project direction.
 # File Version: 20250723.155400
-# Project Version: 1.0.0
 # Project Repository: https://github.com/capuromeyer/db_backups
 # Usage: This script is intended to be sourced by other scripts and provides
 #        functions for configuration processing and validation.
