@@ -12,7 +12,7 @@
 # File Version: 20250721.180000
 #
 # Usage:
-#   curl -sSL https://raw.githubusercontent.com/capuromeyer/db_backups/jules/online_install.sh | sudo bash
+#   curl -sSL https://raw.githubusercontent.com/capuromeyer/db_backups/master/online_install.sh | sudo bash
 #
 # Notes:
 #   - Must be run as root or with sudo.
