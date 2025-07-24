@@ -1,0 +1,210 @@
+# ==============================================================================
+# Sample Project Configuration File for db_backups
+# ==============================================================================
+# Path Example: /etc/db_backups/conf.d/your_project_name.conf
+#
+# Copy this file to /etc/db_backups/conf.d/your_project_name.conf and customize it.
+# Ensure this file has restricted permissions if it contains sensitive data (e.g., 600).
+#
+# This file defines all backup parameters for a specific project or set of databases.
+# It is included by the main manifest file (/etc/db_backups/db_backups.conf).
+# ==============================================================================
+
+# --- Project Identification (MANDATORY) ---
+# PROJECT_NAME: A unique name for this backup project.
+# This name will be used to create default directory paths for backups and temp files
+# (e.g., /var/backups/db_backups/PROJECT_NAME/ and /var/cache/db_backups/PROJECT_NAME_temp/).
+# It should be filesystem-friendly (e.g., use underscores instead of spaces, avoid special characters).
+PROJECT_NAME="project01"
+
+
+# --- Database Settings ---
+# List of Databases for this project (space-separated strings in a bash array)
+# Example: DBS_TO_BACKUP=("db_main" "db_users" "db_sales_prod")
+DBS_TO_BACKUP=("pg_DB01" "postgresql_DB08" "PG_SQL_Database_DB5" )
+
+# Database Type
+# Supported: "mysql", "mariadb", "postgres"
+# Default if omitted in preflight (but best to be explicit per project): "mysql"
+DB_TYPE="postgres"
+
+# Database Credentials
+# It is HIGHLY recommended to use a dedicated backup user with MINIMAL required privileges.
+
+#DB_USER="root"
+#DB_PASSWORD="your-password"
+# Note: for PostgreSQL if no password given it will use unix credential.
+
+
+# --- Backup Target & Storage ---
+# BACKUP_TYPE: Specifies where to store backups for this project.
+# Options: "local", "cloud", "both".
+# Default if omitted in preflight (but best to be explicit): "cloud"
+BACKUP_TYPE="both"
+
+# Note: LOCAL_BACKUP_ROOT and TEMP_DIR are now automatically derived from PROJECT_NAME by default.
+# See "Advanced Settings (Optional)" at the end of this file if you need to override these paths.
+
+
+
+# --- Cloud Provider ---
+# Cloud Storage Settings (Required if BACKUP_TYPE is "cloud" or "both")
+# Default if omitted in preflight (but best to be explicit): "s3"
+# Spported: "s3", "r2"
+CLOUD_STORAGE_PROVIDER="r2"
+
+# S3 Specifics (Required if CLOUD_STORAGE_PROVIDER is "s3")
+S3_BUCKET_NAME="db-backups-r2" 
+
+# S3 Path (Optional path/prefix within the bucket for this project's backups)
+# Example: "client_backups/project_example/" or "databases/project_example/"
+# If omitted, backups will be placed in the root of the bucket (not recommended for multiple projects).
+# If PROJECT_NAME is "my_project", a good default might be "my_project_backups" or similar.
+S3_PATH="db_backups_cloud_directory_r2"
+
+
+
+# --- Frequency Enablement ---
+# For each backup frequency, set to "on" to enable backups for THIS project.
+# Any other value (e.g., "off", "no", "false", "0", or if the line is
+# missing/commented out) means backups for that frequency are DISABLED for this project.
+
+BACKUP_FREQUENCY_MINUTELY="off"
+BACKUP_FREQUENCY_HOURLY="on"
+BACKUP_FREQUENCY_DAILY="on"
+BACKUP_FREQUENCY_WEEKLY="on"
+BACKUP_FREQUENCY_MONTHLY="on"
+
+
+
+# --- Time To Live (TTL) / Retention Settings ---
+# Define how long to keep backups for each frequency enabled above.
+# Format: <number><unit> (m=minutes, h=hours, d=days, w=weeks, M=months, y=years)
+# Example: "60m", "24h", "7d", "4w", "6M", "1y".
+# Use "0" (e.g., "0m" or just "0") for effectively infinite retention (no auto-deletion by this script).
+# If a TTL variable for an enabled frequency is not set, it defaults to "0" (infinite).
+
+TTL_MINUTELY_BACKUP="120m"  # Keep minutely backups for 2 hours (if MINUTELY is "on")
+TTL_HOURLY_BACKUP="5h"      # Keep hourly backups for 30 hours (2 days)
+TTL_DAILY_BACKUP="14d"      # Keep daily backups for 14 days (2 weeks)
+TTL_WEEKLY_BACKUP="5w"      # Keep weekly backups for 5 weeks
+TTL_MONTHLY_BACKUP="12M"    # Keep monthly backups for 12 months (1 year)
+TTL_YEARLY_BACKUP="2y"      # Keep yearly backups for 3 years (if YEARLY is "on")
+
+
+
+# ------------- Cloudflare R2 Settings -------------- #
+# Cloudflare R2 Bucket Settings
+
+# ----- aws cli for R2 ----- #
+# You can access Cloudflare R2 with the AWS CLI by creating a dedicated profile, pointing it at your 
+# R2 endpoint, and then using either --endpoint-url on each command or embedding the endpoint into your 
+# profile’s config. Once set up, standard AWS CLI S3 commands (e.g. ls, cp, s3api list-buckets) work 
+# seamlessly against R2 just like they do against AWS S3.
+
+# Keys are dummy data!!! 
+
+# Step 1: Create an R2 Specific AWS CLI Profile
+# Run the interactive setup to capture your R2 credentials and default settings:
+
+# aws configure --profile r2 
+
+# where 'r2' is the profile name
+
+# When prompted, enter:
+
+#    AWS Access Key ID:      e1506522492856e02e36aa47e66b3b68                                           // (your R2 API Token’s access key) 
+#    AWS Secret Access Key:  9606eb789f01b1ba468d6a73cce7e0118ea0c72730e831cc44cd62c3e20f18ba           // your R2 API Token’s secret key 
+#    Default region name:    auto 
+
+# Step 2: Configure the R2 Endpoint in ~/.aws/config
+# To avoid errors you need to add your R2 endpoint under the r2 profile:
+
+# sudo su
+# cd ~/.aws
+# sudo nano config
+
+# On the file add the endpoint like this
+
+# -----
+#  [default]
+#  region = us-east-1
+#  [profile r2]
+#  region = auto
+#  endpoint_url = https://957ba64b82843e3ee1a7a08eef0fd92c.r2.cloudflarestorage.com                     //  https://<ACCOUNT_ID>.r2.cloudflarestorage.com
+# -----
+
+# Replace <ACCOUNT_ID> with your actual Cloudflare account ID. 
+# This tells the AWS CLI to route all commands for profile r2 to your R2 endpoint
+
+# Step 3: Testing Your Configuration
+
+# List Objects in a Bucket
+#
+# sudo aws s3 ls s3://your-bucket --profile r2
+# ie: sudo aws s3 ls s3://r2-db-backups --profile r2
+# This calls ListObjectsV2 on the target bucket, fetching its contents from R2
+# Make sure you have some dummy files on the bucket.
+# ------------------------ #
+
+# ----- s3cmd for R2 ----- #
+
+# Step 1 Create R2 Profile
+
+# sudo su
+# cd
+# sudo s3cmd --configure -c ~/.s3cfg_r2
+# where /.s3cfg_r2 is the profile name
+
+# When prompted, enter:
+
+#    AWS Access Key ID:                                                e1506511492856e02e36aa47e66b3b68                                           
+#        // (your R2 API Token’s access key)
+
+#    AWS Secret Access Key:                                            9606eb769f01b1ba468d6a32cce7e0118ea0c72730e831cc44cd62c3e20f18ba           
+#        // your R2 API Token’s secret key
+
+#    Default Region:                                                   auto
+
+#    S3 Endpoint:                                                      957ba64b82843e3ee1a7a08eef0fd92c.r2.cloudflarestorage.com 
+#        // <ACCOUNT_ID>.r2.cloudflarestorage.com 
+#        //(notice this do not include https://)
+
+#    DNS-style bucket+hostname:port template for accessing a bucket    %(bucket)s.957ba64b82843e3ee1a7a08eef0fd92c.r2.cloudflarestorage.com
+#        // notice %(bucket)s. is a placeholder require to work.
+
+#        //rest of prompted parameters can be the defaults by just hit keyboard "enter".  
+
+# About  ERROR: Test failed: 501
+# Cloudflare R2 intentionally rejects S3 ListBuckets (and ListObjects/ListObjectsV2) calls that include 
+# unsupported query parameters—such as delimiter or list-type—with an HTTP 501 NotImplemented 
+# response . 
+# s3cmd’s --configure test invokes ListBuckets under the hood and includes a delimiter parameter,
+# so it predictably fails with that 501 error 
+# This failure does not indicate a DNS or credential problem.
+
+# To verify your setup, ignore 501 s3cmd error, instead to verify target a specific bucket 
+# sudo s3cmd -c ~/.s3cfg_r2 ls s3://r2-db-backups  
+# ------------------------ #
+
+
+R2_AWS_PROFILE_NAME="r2"
+R2_S3CMD_CONFIG_PATH="/root/.s3cfg_r2"
+
+
+
+# --- Advanced Settings (Optional) ---
+#
+# Override Default Local Backup Root:
+# By default, LOCAL_BACKUP_ROOT is /var/backups/db_backups/PROJECT_NAME/
+# Uncomment and set this if you need a custom absolute path for this project's local backups.
+# LOCAL_BACKUP_ROOT="/opt/custom_backup_location/my_project_backups"
+#
+# Override Default Temporary Directory:
+# By default, TEMP_DIR is /var/cache/db_backups/PROJECT_NAME_temp/
+# Uncomment and set this if you need a custom absolute path for this project's temporary files.
+# TEMP_DIR="/opt/custom_temp_location/my_project_temp"
+
+# ==============================================================================
+# End of Sample Project Configuration
+# ==============================================================================
