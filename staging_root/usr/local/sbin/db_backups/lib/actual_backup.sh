@@ -1,19 +1,24 @@
 #!/bin/bash
-
-# -----------------------------------------------------------------------------
+# =============================================================================
 # Script: actual_backup.sh
-# Purpose: Performs the core database backup operations based on configuration.
-# Developed by: Alejandro Capuro
-# Copyright: (c) 2025 Alejandro Capuro. All rights reserved.
-# File Version: 20250718.150000 # Corrected error propagation and return logic
+# Purpose: Performs the core database backup operations based on the loaded
+#          configuration. It handles filename generation, database dumping,
+#          compression, and moving the final backup file to its destination.
+# Copyright: (c) 2025 Alejandro Capuro Meyer. All rights reserved.
+# License: GPL v3 - see LICENSE file for details
+# Development: This script was developed with AI assistance (including Gemini,
+#              ChatGPT, Claude, Jules, Firebase, and others) under human
+#              guidance for architecture, logic design, and project direction.
+# File Version: 20250723.155000
 # Project Version: 1.0.0
+# Project Repository: https://github.com/capuromeyer/db_backups
+# Usage: This script is intended to be sourced by project_list_processor.sh
+#        after preflight checks and configuration loading have been completed.
 #
 # Notes:
-#   - This script is intended to be sourced by project_list_processor.sh
-#     AFTER preflight checks and configuration loading.
-#   - It expects all necessary project configuration variables to be loaded
-#     in the environment.
-# -----------------------------------------------------------------------------
+# - This script expects all necessary project configuration variables to be
+#   loaded in the environment.
+# =============================================================================
 
 # Source necessary library scripts
 source "/usr/local/sbin/db_backups/lib/filename_generator.sh" || { echo "Error: Could not source /usr/local/sbin/db_backups/lib/filename_generator.sh"; return 1; }

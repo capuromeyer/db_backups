@@ -1,9 +1,23 @@
 #!/bin/bash
-# -----------------------------------------------------------------------------
-# Script:  dbb-tester.sh
-# Purpose: Wrapper script for the hourly cronjob.
-#          Calls the global-runner.sh with 'hourly' frequency.
-# -----------------------------------------------------------------------------
+# =============================================================================
+# Script: dbb-tester.sh
+# Purpose: A wrapper script designed for testing the backup process.
+#          Its main function is to invoke the global-runner.sh script,
+#          passing 'hourly' as the specific backup frequency for testing.
+# Copyright: (c) 2025 Alejandro Capuro Meyer. All rights reserved.
+# License: GPL v3 - see LICENSE file for details
+# Development: This script was developed with AI assistance (including Gemini,
+#              ChatGPT, Claude, Jules, Firebase, and others) under human
+#              guidance for architecture, logic design, and project direction.
+# File Version: 20250723.153700
+# Project Version: 1.0.0
+# Project Repository: https://github.com/capuromeyer/db_backups
+# Usage: This script is intended for manual execution for testing purposes.
+#
+# Notes:
+# - This script acts as a simple, frequency-specific trigger for the main
+#   backup orchestration script.
+# =============================================================================
 
 # Define the frequency for this specific wrapper script
 FREQUENCY="hourly"

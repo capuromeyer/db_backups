@@ -1,32 +1,23 @@
 #!/usr/bin/env bash
-# -----------------------------------------------------------------------------
+# =============================================================================
 # Script: master_config_file_utils.sh
-# Purpose: Utility to process a manifest of project config files, validate them,
-#          and report valid/invalid configs as well as duplicates.
-# Developed by: Alejandro Capuro (Project Lead & Logic Design)
-# Implemented by: AI Assistant, under guidance
-# Copyright: (c) 2025 Alejandro Capuro. All rights reserved.
-# File Version: 20250712.000000
+# Purpose: Provides utilities to process a manifest of project configuration
+#          files, validate them, and report on their status (valid/invalid)
+#          as well as detect duplicates.
+# Copyright: (c) 2025 Alejandro Capuro Meyer. All rights reserved.
+# License: GPL v3 - see LICENSE file for details
+# Development: This script was developed with AI assistance (including Gemini,
+#              ChatGPT, Claude, Jules, Firebase, and others) under human
+#              guidance for architecture, logic design, and project direction.
+# File Version: 20250723.155800
 # Project Version: 1.0.0
+# Project Repository: https://github.com/capuromeyer/db_backups
+# Usage: This script is intended to be sourced by other scripts. The main
+#        function is `detect_and_report_duplicates`.
 #
-# Functions:
-#   process_and_report_configs(manifest_file)
-#   detect_and_report_duplicates(manifest_file)
-# -----------------------------------------------------------------------------
-# This script provides functions that:
-#   1. Reads a manifest file listing project config paths (with optional "include" syntax).
-#   2. Ignores comments (#) and blank lines.
-#   3. Strips the "include" keyword and trailing semicolons.
-#   4. Checks each file for existence and readability.
-#   5. Prints a detailed summary (to stderr) marking each path Valid/Invalid.
-#   6. Identifies duplicates by project name and reports Unique/Duplicate listings.
-#   7. Provides totals for both validation and duplicate checks.
-#   8. Creates a file with unique config paths and outputs its path as the first line.
-#
-# Usage:
-#   source this script, then call:
-#     process_and_report_configs /etc/db_backups/db_backups.conf
-#     unique_file_path=$(detect_and_report_duplicates /etc/db_backups/db_backups.conf)
+# Notes:
+# - This script is not meant for direct execution.
+# =============================================================================
 
 set -euo pipefail
 

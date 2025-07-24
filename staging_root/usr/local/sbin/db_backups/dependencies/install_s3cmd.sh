@@ -1,15 +1,23 @@
 #!/bin/bash
-# -----------------------------------------------------------------------------
+# =============================================================================
 # Script: install_s3cmd.sh
-# Purpose: Installs s3cmd package using apt.
-# Author: Alejandro Capuro (Original tool concept) / Jules (Script generation)
-# Copyright: (c) $(date +%Y) Alejandro Capuro. All rights reserved.
-# Version: 0.1.0
+# Purpose: Installs the s3cmd package using the apt package manager.
+# Copyright: (c) 2025 Alejandro Capuro Meyer. All rights reserved.
+# License: GPL v3 - see LICENSE file for details
+# Development: This script was developed with AI assistance (including Gemini,
+#              ChatGPT, Claude, Jules, Firebase, and others) under human
+#              guidance for architecture, logic design, and project direction.
+# File Version: 20250723.154700
+# Project Version: 1.0.0
+# Project Repository: https://github.com/capuromeyer/db_backups
+# Usage: This script is intended to be called by other scripts (e.g., an installer)
+#        and is not meant for direct execution.
 #
 # Notes:
-#   - Requires sudo for apt install commands.
-#   - Idempotent: checks if s3cmd is already installed.
-# -----------------------------------------------------------------------------
+# - This script is idempotent; it first checks if s3cmd is already installed
+#   and will exit if it is.
+# - Requires sudo privileges for apt install commands.
+# =============================================================================
 
 set -e
 

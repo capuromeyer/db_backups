@@ -1,23 +1,24 @@
 #!/bin/bash
-# -----------------------------------------------------------------------------
+# =============================================================================
 # Script: ttl_parser.sh
 # Purpose: Parses human-friendly TTL (Time To Live) strings (e.g., "7d", "4w")
 #          into an equivalent value in total minutes.
-# Developed by: Alejandro Capuro (Project Lead & Logic Design)
-# Implemented by: Jules (AI Assistant, under guidance)
-# Copyright: (c) 2025 Alejandro Capuro. All rights reserved.
-# File Version: 20250703.100000 # YYYYMMDD.HHMMSS
+# Copyright: (c) 2025 Alejandro Capuro Meyer. All rights reserved.
+# License: GPL v3 - see LICENSE file for details
+# Development: This script was developed with AI assistance (including Gemini,
+#              ChatGPT, Claude, Jules, Firebase, and others) under human
+#              guidance for architecture, logic design, and project direction.
+# File Version: 20250723.160200
 # Project Version: 1.0.0
-#
-# Usage:
-#   source this script
+# Project Repository: https://github.com/capuromeyer/db_backups
+# Usage: source this script
 #   minutes=$(parse_human_ttl_to_minutes "7d")
-#   if [ "$minutes" == "INVALID_TTL" ]; then echo "Error parsing"; fi
 #
 # Notes:
-#   - Intended to be sourced by preflight.sh or other scripts.
-#   - Uses approximations: 1M = 31 days, 1y = 365 days for TTL calculations.
-# -----------------------------------------------------------------------------
+# - This script is intended to be sourced by other scripts and is not meant
+#   for direct execution.
+# - Uses approximations: 1M = 31 days, 1y = 365 days for TTL calculations.
+# =============================================================================
 
 # Function to parse a human-readable TTL string and convert it to minutes.
 # Arguments:

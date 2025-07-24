@@ -1,17 +1,25 @@
 #!/bin/bash
-# -----------------------------------------------------------------------------
+# =============================================================================
 # Script: check_s3cmd_config.sh
-# Purpose: Checks if s3cmd appears to be configured by looking for ~/.s3cfg
-#          and attempting a basic 's3cmd ls' command.
-# Author: Alejandro Capuro (Original tool concept) / Jules (Script generation)
-# Copyright: (c) $(date +%Y) Alejandro Capuro. All rights reserved.
-# Version: 0.1.0
+# Purpose: Checks if s3cmd appears to be configured by looking for the ~/.s3cfg
+#          file and, if found, attempting a basic 's3cmd ls' command to
+#          verify the configuration.
+# Copyright: (c) 2025 Alejandro Capuro Meyer. All rights reserved.
+# License: GPL v3 - see LICENSE file for details
+# Development: This script was developed with AI assistance (including Gemini,
+#              ChatGPT, Claude, Jules, Firebase, and others) under human
+#              guidance for architecture, logic design, and project direction.
+# File Version: 20250723.154400
+# Project Version: 1.0.0
+# Project Repository: https://github.com/capuromeyer/db_backups
+# Usage: This script is intended to be called by other scripts (e.g., preflight checks)
+#        and is not meant for direct execution.
 #
 # Notes:
-#   - Called by preflight.sh.
-#   - Does not exit fatally, only prints warnings.
-#   - HOME environment variable must be correctly set for the user running this.
-# -----------------------------------------------------------------------------
+# - This is a non-strict check and will only print a warning if the s3cmd
+#   configuration is missing or invalid; it will not cause the calling script to exit.
+# - The HOME environment variable must be correctly set for the user running this script.
+# =============================================================================
 # Do not set -e here, as we want to capture the exit status of s3cmd
 
 echo "Checking s3cmd configuration status (non-strict)..."

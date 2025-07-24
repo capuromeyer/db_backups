@@ -1,22 +1,25 @@
 #!/bin/bash
-# -----------------------------------------------------------------------------
+# =============================================================================
 # Script: project_list_processor.sh
 # Purpose: Reads a list of project paths from an input file, and for each path,
-#          executes user-defined logic for a SPECIFIC backup frequency.
-# Developed by: Jules (AI Assistant)
-# Copyright: (c) 2025 Alejandro Capuro. All rights reserved.
-# File Version: 20250721.150000 # Updated version after fixing cloud sync logic
+#          executes user-defined logic for a specific backup frequency.
+# Copyright: (c) 2025 Alejandro Capuro Meyer. All rights reserved.
+# License: GPL v3 - see LICENSE file for details
+# Development: This script was developed with AI assistance (including Gemini,
+#              ChatGPT, Claude, Jules, Firebase, and others) under human
+#              guidance for architecture, logic design, and project direction.
+# File Version: 20250723.160000
 # Project Version: 1.0.0
-#
+# Project Repository: https://github.com/capuromeyer/db_backups
 # Usage: ./project_list_processor.sh <path_to_list_of_projects.txt> <frequency>
 #   <frequency> can be: minutely, hourly, daily, weekly, monthly, yearly
 #
 # Notes:
-#   - This script now receives an ALREADY FILTERED list of project paths from global-runner.sh.
-#   - It no longer performs frequency-based filtering itself.
-#   - It explicitly sources 'project_preflight.sh' once at the beginning.
-#   - Collects and reports status for each individual database backup.
-# -----------------------------------------------------------------------------
+# - This script receives an already filtered list of project paths from
+#   global-runner.sh.
+# - It explicitly sources 'project_preflight.sh' once at the beginning.
+# - It collects and reports the status for each individual database backup.
+# =============================================================================
 
 # --- Global Configuration & Variables ---
 # Determine the directory of the current script.

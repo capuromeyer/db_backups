@@ -1,9 +1,24 @@
 #!/bin/bash
-# -----------------------------------------------------------------------------
-# Script:  dbb-hourly.sh
-# Purpose: Wrapper script for the hourly cronjob.
-#          Calls the global-runner.sh with 'hourly' frequency.
-# -----------------------------------------------------------------------------
+# =============================================================================
+# Script: dbb-hourly.sh
+# Purpose: A wrapper script designed to be executed by an hourly cron job.
+#          Its main function is to invoke the global-runner.sh script,
+#          passing 'hourly' as the specific backup frequency.
+# Copyright: (c) 2025 Alejandro Capuro Meyer. All rights reserved.
+# License: GPL v3 - see LICENSE file for details
+# Development: This script was developed with AI assistance (including Gemini,
+#              ChatGPT, Claude, Jules, Firebase, and others) under human
+#              guidance for architecture, logic design, and project direction.
+# File Version: 20250723.153600
+# Project Version: 1.0.0
+# Project Repository: https://github.com/capuromeyer/db_backups
+# Usage: This script is intended for use by a scheduler (like cron) and is not
+#        meant for direct execution with arguments.
+#
+# Notes:
+# - This script acts as a simple, frequency-specific trigger for the main
+#   backup orchestration script.
+# =============================================================================
 
 # Define the frequency for this specific wrapper script
 FREQUENCY="hourly"

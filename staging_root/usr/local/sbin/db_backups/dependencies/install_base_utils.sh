@@ -1,20 +1,25 @@
 #!/bin/bash
-# -----------------------------------------------------------------------------
+# =============================================================================
 # Script: install_base_utils.sh
-# Purpose: Installs basic utility packages (zip or bc) using apt.
-#          This script is designed to be called with a specific package name.
-# Author: Alejandro Capuro (Original tool concept) / Jules (Script generation)
-# Copyright: (c) $(date +%Y) Alejandro Capuro. All rights reserved.
-# Version: 0.2.0 (Refactored for single package install)
-#
-# Usage:
-#   sudo ./install_base_utils.sh <package_name>
+# Purpose: Installs basic utility packages (zip, bc, sqlite3, git) using the apt
+#          package manager. The script is designed to be called with a specific
+#          package name as an argument.
+# Copyright: (c) 2025 Alejandro Capuro Meyer. All rights reserved.
+# License: GPL v3 - see LICENSE file for details
+# Development: This script was developed with AI assistance (including Gemini,
+#              ChatGPT, Claude, Jules, Firebase, and others) under human
+#              guidance for architecture, logic design, and project direction.
+# File Version: 20250723.154600
+# Project Version: 1.0.0
+# Project Repository: https://github.com/capuromeyer/db_backups
+# Usage: sudo ./install_base_utils.sh <package_name>
 #   Example: sudo ./install_base_utils.sh zip
 #
 # Notes:
-#   - Requires sudo for apt install commands.
-#   - Idempotent: checks if the package's command is already installed.
-# -----------------------------------------------------------------------------
+# - This script is idempotent; it checks if the package's command is already
+#   installed and will exit if it is.
+# - Requires sudo privileges for apt install commands.
+# =============================================================================
 
 set -e
 

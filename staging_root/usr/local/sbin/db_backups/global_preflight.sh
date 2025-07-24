@@ -1,20 +1,24 @@
 #!/bin/bash
-# -----------------------------------------------------------------------------
-# Script: preflight.sh
-# Purpose: Performs pre-run checks and setup for the db_backups scripts.
-#          Provides functions for global (one-time) checks.
-# Developed by: Alejandro Capuro (Project Lead & Logic Design)
-# Implemented by: AI Assistant, under guidance
-# Copyright: (c) 2025 Alejandro Capuro. All rights reserved.
-# File Version: 20250712.100000
+# =============================================================================
+# Script: global_preflight.sh
+# Purpose: Performs pre-run checks and setup for the db_backups scripts. It provides
+#          functions for global (one-time) checks, including dependency
+#          verification and installation, and cloud CLI configuration checks.
+# Copyright: (c) 2025 Alejandro Capuro Meyer. All rights reserved.
+# License: GPL v3 - see LICENSE file for details
+# Development: This script was developed with AI assistance (including Gemini,
+#              ChatGPT, Claude, Jules, Firebase, and others) under human
+#              guidance for architecture, logic design, and project direction.
+# File Version: 20250723.154800
 # Project Version: 1.0.0
+# Project Repository: https://github.com/capuromeyer/db_backups
+# Usage: This script is intended to be sourced by other scripts. The main entry
+#        point is the `run_all_preflight_checks` function.
 #
 # Notes:
-#   - This script is intended to be sourced.
-#   - It defines functions for global checks only.
-#   - Root check should be performed by the calling script BEFORE sourcing this
-#     script and calling perform_global_preflight_checks().
-# -----------------------------------------------------------------------------
+# - This script defines functions for global checks only.
+# - The calling script should perform a root check before sourcing this script.
+# =============================================================================
 
 # PREFLIGHT_SCRIPT_DIR is set to the directory of this script itself.
 PREFLIGHT_SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)

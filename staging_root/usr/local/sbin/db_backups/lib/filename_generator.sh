@@ -1,22 +1,24 @@
 #!/bin/bash
-# -----------------------------------------------------------------------------
+# =============================================================================
 # Script: filename_generator.sh
-# Purpose: Generates a standard base filename for backups.
-#          The caller is responsible for providing the correctly formatted
-#          timestamp string representing the actual (previous) backup period.
-# Developed by: Alejandro Capuro (Project Lead & Logic Design)
-# Implemented by: Jules (AI Assistant, under guidance)
-# Copyright: (c) 2025 Alejandro Capuro. All rights reserved.
-# File Version: 20250702.170000 # YYYYMMDD.HHMMSS
+# Purpose: Generates a standard base filename for backups. The caller is
+#          responsible for providing the correctly formatted timestamp string
+#          representing the actual (previous) backup period.
+# Copyright: (c) 2025 Alejandro Capuro Meyer. All rights reserved.
+# License: GPL v3 - see LICENSE file for details
+# Development: This script was developed with AI assistance (including Gemini,
+#              ChatGPT, Claude, Jules, Firebase, and others) under human
+#              guidance for architecture, logic design, and project direction.
+# File Version: 20250723.155700
 # Project Version: 1.0.0
-#
-# Usage:
-#   source this script
+# Project Repository: https://github.com/capuromeyer/db_backups
+# Usage: source this script
 #   base_name=$(generate_backup_basename "mydb" "2025-07-01-15")
 #
 # Notes:
-#   - Intended to be sourced by other scripts.
-# -----------------------------------------------------------------------------
+# - This script is intended to be sourced by other scripts and is not meant
+#   for direct execution.
+# =============================================================================
 
 # Function to generate a standard backup base filename.
 # The .sql or .sql.zip extension should be added by the caller.

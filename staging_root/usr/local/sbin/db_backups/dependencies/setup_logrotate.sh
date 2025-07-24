@@ -1,16 +1,24 @@
 #!/bin/bash
-# -----------------------------------------------------------------------------
+# =============================================================================
 # Script: setup_logrotate.sh
-# Purpose: Sets up logrotate configuration for the db_backups tool.
-#          Creates a config file in /etc/logrotate.d/ to manage backup script logs.
-# Author: Alejandro Capuro (Original tool concept) / Jules (Script generation)
-# Copyright: (c) $(date +%Y) Alejandro Capuro. All rights reserved.
-# Version: 0.1.0
+# Purpose: Sets up the logrotate configuration for the db_backups tool. It creates
+#          a configuration file in /etc/logrotate.d/ to manage the rotation of
+#          backup script logs.
+# Copyright: (c) 2025 Alejandro Capuro Meyer. All rights reserved.
+# License: GPL v3 - see LICENSE file for details
+# Development: This script was developed with AI assistance (including Gemini,
+#              ChatGPT, Claude, Jules, Firebase, and others) under human
+#              guidance for architecture, logic design, and project direction.
+# File Version: 20250723.154700
+# Project Version: 1.0.0
+# Project Repository: https://github.com/capuromeyer/db_backups
+# Usage: This script is intended to be called by other scripts (e.g., an installer)
+#        and is not meant for direct execution.
 #
 # Notes:
-#   - Requires sudo to write to /etc/logrotate.d/.
-#   - Ensures the log directory /var/log/db_backups exists.
-# -----------------------------------------------------------------------------
+# - Requires sudo privileges to write to /etc/logrotate.d/.
+# - Ensures that the log directory /var/log/db_backups exists.
+# =============================================================================
 
 set -e
 
