@@ -3,6 +3,8 @@
 # ==============================================================================
 # Path Example: /etc/db_backups/conf.d/your_project_name.conf
 #
+# File Version: 20250724.165000
+#
 # Copy this file to /etc/db_backups/conf.d/your_project_name.conf and customize it.
 # Ensure this file has restricted permissions if it contains sensitive data (e.g., 600).
 #
