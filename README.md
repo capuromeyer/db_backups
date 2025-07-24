@@ -31,7 +31,7 @@ Backups are organized by frequency (minutely, hourly, daily, weekly, monthly) an
     
 **Install via Online Installer** (as root):
 
-`curl -sSL https://raw.githubusercontent.com/capuromeyer/db_backups/main/online_install.sh | sudo bash`
+`curl -sSL https://raw.githubusercontent.com/capuromeyer/db_backups/master/online_install.sh | sudo bash`
 
 **Configure Credentials (S3)**:
 
@@ -546,20 +546,15 @@ Set up cron entries for each required frequency:
 
 ```
 # Every 30 minutes
-*/30 * * * * /usr/local/sbin/db_backups/dbb-minutely.sh \
-  >> /var/log/db_backups/01.minutely.log
+*/30 * * * * /usr/local/sbin/db_backups/dbb-minutely.sh >> /var/log/db_backups/01.minutely.log
 # Every hour at 01 minute
-1 * * * * /usr/local/sbin/db_backups/dbb-hourly.sh \
-  >> /var/log/db_backups/02.hourly.log 
-# Every day at 04:03
-3 4 * * * /usr/local/sbin/db_backups/dbb-daily.sh \
-  >> /var/log/db_backups/03.daily.log 
+1 * * * * /usr/local/sbin/db_backups/dbb-hourly.sh  >> /var/log/db_backups/02.hourly.log 
+# Every day at 03:03
+3 3 * * * /usr/local/sbin/db_backups/dbb-daily.sh >> /var/log/db_backups/03.daily.log 
 # Every week on Monday at 00:02
-2 0 * * MON /usr/local/sbin/db_backups/dbb-weekly.sh \
-  >> /var/log/db_backups/04.weekly.log 
-# Every month at 01:07
-7 1 1 * * /usr/local/sbin/db_backups/dbb-monthly.sh \
-  >> /var/log/db_backups/05.monthly.log
+2 0 * * MON /usr/local/sbin/db_backups/dbb-weekly.sh >> /var/log/db_backups/04.weekly.log 
+# Every month 1st day at 01:07
+7 1 1 * * /usr/local/sbin/db_backups/dbb-monthly.sh >> /var/log/db_backups/05.monthly.log
 ```
 
 Wrapper scripts exist for all frequencies (minutely, daily, etc.).
