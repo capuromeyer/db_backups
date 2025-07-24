@@ -1,15 +1,22 @@
 #!/bin/bash
-# -----------------------------------------------------------------------------
+# =============================================================================
 # Script: online_install.sh
 # Purpose: Installs the db_backups tool and its dependencies onto the system.
 #          This includes creating FHS-compliant directories, cloning the source,
 #          copying scripts, setting up a sample configuration, installing
 #          required packages (aws-cli, s3cmd, zip, bc, snapd, and database clients),
 #          and setting up log rotation.
-# Author: Alejandro Capuro (Original tool) / Jules (Installer script generation)
-# Copyright: (c) $(date +%Y) Alejandro Capuro. All rights reserved.
-# Version: 0.2.1 (Installer version)
-# File Version: 20250721.180000
+#
+# Copyright: (c) 2025 Alejandro Capuro Meyer. All rights reserved.
+# License: GPL v3 - see LICENSE file for details
+#
+# Development: This script was developed with AI assistance (including Gemini,
+#              ChatGPT, Claude, Jules, Firebase, and others) under human
+#              guidance for architecture, logic design, and project direction.
+#
+# File Version: 20250724.153500
+#
+# Project Repository: https://github.com/capuromeyer/db_backups
 #
 # Usage:
 #   curl -sSL https://raw.githubusercontent.com/capuromeyer/db_backups/master/online_install.sh | sudo bash
@@ -17,10 +24,7 @@
 # Notes:
 #   - Must be run as root or with sudo.
 #   - Assumes a Debian-based system for 'apt' package management.
-#   - Idempotent to some extent (e.g., won't overwrite existing config).
-#   - This script relies on the 'jules' branch of the db_backups repository.
-#     For a production environment, consider cloning a stable release tag or 'main' branch.
-# -----------------------------------------------------------------------------
+# =============================================================================
 
 set -e
 
@@ -77,7 +81,7 @@ if [ ! -t 0 ]; then # Check if stdin (file descriptor 0) is not a terminal
     info "The script will proceed automatically after displaying the actions to be performed."
     info "If you prefer to confirm each step or review more carefully, please download the script"
     info "and run it directly: "
-    info "  1. curl -sSLO https://raw.githubusercontent.com/capuromeyer/db_backups/jules/online_install.sh"
+    info "  1. curl -sSLO https://raw.githubusercontent.com/capuromeyer/db_backups/master/online_install.sh"
     info "  2. chmod +x online_install.sh"
     info "  3. sudo ./online_install.sh"
     info "Proceeding with automatic installation in 3 seconds (Press Ctrl+C to abort)..."
@@ -103,8 +107,8 @@ echo "----------------------------------------"
 
 # --- Configuration ---
 REPO_URL="https://github.com/capuromeyer/db_backups.git"
-# IMPORTANT: For a production release, consider changing REPO_BRANCH to 'main' or a specific release tag.
-REPO_BRANCH="jules" # Current development branch
+# IMPORTANT: For a production release, consider changing REPO_BRANCH to a specific release tag.
+REPO_BRANCH="master" # Changed from 'jules' to 'master' as requested
 
 SCRIPT_INSTALL_DIR="/usr/local/sbin/db_backups"
 CONFIG_INSTALL_DIR="/etc/db_backups"

@@ -11,7 +11,6 @@
 #              ChatGPT, Claude, Jules, Firebase, and others) under human
 #              guidance for architecture, logic design, and project direction.
 # File Version: 20250723.160900
-# Project Version: 1.0.0
 # Project Repository: https://github.com/capuromeyer/db_backups
 # Usage: curl -sSL https://raw.githubusercontent.com/capuromeyer/db_backups/jules/online_install.sh | sudo bash
 #

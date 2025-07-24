@@ -1,0 +1,73 @@
+# ==============================================================================
+# Main Backup Configuration Manifest for db_backups
+# ==============================================================================
+# Path: /etc/db_backups/db_backups.conf
+#
+# File Version: 20250724.165000
+#
+# This file acts as a master list of all backup jobs to be considered by the
+# frequency-specific backup scripts (e.g., hourly-backup.sh, daily-backup.sh).
+#
+# How it Works:
+# 1. Each uncommented 'include /path/to/project_config.conf;' line below
+#    points to a specific project's configuration file.
+# 2. For each active 'include', the corresponding project configuration file
+#    is loaded in an isolated run.
+# 3. The project configuration file itself contains flags (e.g.,
+#    BACKUP_FREQUENCY_HOURLY="on") to determine if backups for that
+#    specific frequency should run for that project.
+#
+# To Enable/Disable a Backup Job:
+# - To ENABLE a project's backups: Uncomment its 'include' line.
+# - To DISABLE a project's backups: Comment out its 'include' line (add # at the start).
+#
+# Project Configuration Files:
+# - Store individual project configuration files in a directory like
+#   /etc/db_backups/conf.d/
+# - A sample project configuration file can be found at:
+#   /etc/db_backups/conf.d.sample/project_example.conf.sample
+#   Copy this sample to /etc/db_backups/conf.d/your_project_name.conf
+#   and customize it with the details needed.
+#
+# IMPORTANT:
+# - Use ABSOLUTE paths for all 'include' directives.
+# - Ensure the paths point to valid, readable configuration files.
+# - The target files define all parameters for a backup job. This manifest
+#   file itself should typically ONLY contain 'include' directives and comments.
+#
+# ==============================================================================
+
+# --- Example Project Configurations ---
+
+# Example 1: A project named 'alpha_project' (currently disabled)
+# Assumes configuration is in /etc/db_backups/conf.d/alpha_project.conf
+#include /etc/db_backups/conf.d/alpha_project.conf;
+
+# Example 2: Backups for 'beta_web_servers' (currently disabled)
+# To enable, remove the '#' from the beginning of the next line.
+# include /etc/db_backups/conf.d/beta_web_servers.conf;
+
+# Example 3: Another project, 'gamma_critical_db' (currently disabled)
+#include /etc/db_backups/conf.d/gamma_critical_db.conf;
+
+# ==============================================================================
+
+
+#include /etc/db_backups/conf.d/project02.conf;
+#include /etc/db_backups/conf.d/project05.conf;
+#include /etc/db_backups/conf.d/project06.conf;
+#include /etc/db_backups/conf.d/project01.conf;
+#include /etc/db_backups/conf.d/project03.conf;
+#include /etc/db_backups/conf.d/project08.conf;
+
+
+
+# ==============================================================================
+# End of Manifest
+# ==============================================================================
+# Note: Any other variable assignments (e.g., DBS_TO_BACKUP=...) in this file
+# will generally be ignored by the new processing model, as each frequency script
+# processes included project files in isolated subshells. Global settings defined
+# here won't propagate into those isolated environments as expected.
+# Focus on using this file for 'include' directives only.
+# ==============================================================================
