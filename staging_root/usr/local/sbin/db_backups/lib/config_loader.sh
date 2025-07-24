@@ -1,23 +1,27 @@
 #!/bin/bash
-# -----------------------------------------------------------------------------
+# =============================================================================
 # Script: config_loader.sh
 # Purpose: Parses a main manifest configuration file, processes 'include'
-#          directives within it, and outputs a list of resolved, unique,
-#          actual configuration file paths to be processed individually.
-# Developed by: Alejandro Capuro (Project Lead & Logic Design)
-# Implemented by: Jules (AI Assistant, under guidance)
-# Copyright: (c) $(date +%Y) Alejandro Capuro. All rights reserved.
-# Version: 0.2.0
+#          directives within it (including globs), and outputs a list of
+#          resolved, unique, and actual configuration file paths to be
+#          processed individually.
+# Copyright: (c) 2025 Alejandro Capuro Meyer. All rights reserved.
+# License: GPL v3 - see LICENSE file for details
+# Development: This script was developed with AI assistance (including Gemini,
+#              ChatGPT, Claude, Jules, Firebase, and others) under human
+#              guidance for architecture, logic design, and project direction.
+# File Version: 20250723.155300
+# Project Version: 1.0.0
+# Project Repository: https://github.com/capuromeyer/db_backups
+# Usage: This script is intended to be sourced by other scripts. The main
+#        function to be called is `get_active_config_paths_from_manifest`.
 #
 # Notes:
-#   - This script is intended to be sourced by frequency-specific backup scripts.
-#   - Main function: get_active_config_paths_from_manifest
-#   - Handles 'include /path/to/file.conf' and 'include /path/to/*.conf'
-#     within the manifest file(s).
-#   - Requires absolute paths for includes.
-#   - Protects against recursive includes of manifest files.
-#   - Output is one fully qualified file path per line for each active project config.
-# -----------------------------------------------------------------------------
+# - Handles 'include /path/to/file.conf' and 'include /path/to/*.conf'.
+# - Requires absolute paths for includes.
+# - Protects against recursive includes of manifest files.
+# - The output is one fully qualified file path per line for each active project config.
+# =============================================================================
 
 # Array to keep track of already processed manifest files to prevent recursion
 _PROCESSED_MANIFEST_FILES=()

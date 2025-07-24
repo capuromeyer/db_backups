@@ -1,26 +1,23 @@
 #!/bin/bash
-# -----------------------------------------------------------------------------
+# =============================================================================
 # Script: file_operations.sh
-# Purpose: Handles common file operations like compression, moving backups,
-#          and cleaning up old local backup files based on TTL.
-# Developed by: Alejandro Capuro (Project Lead & Logic Design)
-# Implemented by: Jules (AI Assistant, under guidance)
-# Copyright: (c) 2025 Alejandro Capuro. All rights reserved.
-# File Version: 20250702.170000 # YYYYMMDD.HHMMSS
+# Purpose: Handles common file operations such as compression, moving backups,
+#          and cleaning up old local backup files based on a TTL.
+# Copyright: (c) 2025 Alejandro Capuro Meyer. All rights reserved.
+# License: GPL v3 - see LICENSE file for details
+# Development: This script was developed with AI assistance (including Gemini,
+#              ChatGPT, Claude, Jules, Firebase, and others) under human
+#              guidance for architecture, logic design, and project direction.
+# File Version: 20250723.155600
 # Project Version: 1.0.0
-#
-# Usage:
-#   source this script
-#   compress_file "/path/to/dump.sql_or_dir" "/path/to/archive.zip"
-#   move_backup "/path/to/archive.zip" "/target/backup_dir/"
-#   cleanup_local_backups "/target/backup_dir/" "1440" # 1 day for final backups
-#   cleanup_temp_directory "/path/to/temp_dir" "120"   # 2 hours for temp files
+# Project Repository: https://github.com/capuromeyer/db_backups
+# Usage: This script is intended to be sourced by other scripts.
 #
 # Notes:
-#   - Intended to be sourced by other scripts.
-#   - Uses sudo for some operations (mv, rm during cleanup) assuming potential
-#     permission restrictions in target directories or on files.
-# -----------------------------------------------------------------------------
+# - This script is not meant for direct execution.
+# - It uses sudo for some operations (mv, rm during cleanup) to handle
+#   potential permission restrictions.
+# =============================================================================
 
 # Function to compress a file using zip
 # Arguments:

@@ -1,16 +1,24 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
-# -----------------------------------------------------------------------------
+# =============================================================================
 # Script: config_processing_utils.sh
-# Purpose: Utility functions for setting up and using a temporary SQLite DB
-#          to validate config files and detect duplicates in backup runs.
-# Developed by: Alejandro Capuro (Project Lead & Logic Design)
-# Implemented by: Jules (AI Assistant, under guidance)
-# Copyright: (c) 2025 Alejandro Capuro. All rights reserved.
-# File Version: 20250712.000000
+# Purpose: Provides utility functions for setting up and using a temporary SQLite
+#          database to validate configuration files and detect duplicates in
+#          backup runs.
+# Copyright: (c) 2025 Alejandro Capuro Meyer. All rights reserved.
+# License: GPL v3 - see LICENSE file for details
+# Development: This script was developed with AI assistance (including Gemini,
+#              ChatGPT, Claude, Jules, Firebase, and others) under human
+#              guidance for architecture, logic design, and project direction.
+# File Version: 20250723.155400
 # Project Version: 1.0.0
-# -----------------------------------------------------------------------------
+# Project Repository: https://github.com/capuromeyer/db_backups
+# Usage: This script is intended to be sourced by other scripts and provides
+#        functions for configuration processing and validation.
+#
+# Notes:
+# - This script is not meant for direct execution.
+# =============================================================================
 
 # Globals (initialized to avoid unbound variable errors)
 declare -a MISSING_OR_UNREADABLE_FILES_REPORT_LINES=()

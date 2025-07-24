@@ -1,26 +1,28 @@
 #!/bin/bash
-# -----------------------------------------------------------------------------
+# =============================================================================
 # Script: online_install.sh
 # Purpose: Installs the db_backups tool and its dependencies onto the system.
 #          This includes creating FHS-compliant directories, cloning the source,
 #          copying scripts, setting up a sample configuration, installing
-#          required packages (aws-cli, s3cmd, zip, bc, snapd, and database clients),
-#          and setting up log rotation.
-# Author: Alejandro Capuro (Original tool) / Jules (Installer script generation)
-# Copyright: (c) $(date +%Y) Alejandro Capuro. All rights reserved.
-# Version: 0.2.1 (Installer version)
-# File Version: 20250721.180000
-#
-# Usage:
-#   curl -sSL https://raw.githubusercontent.com/capuromeyer/db_backups/jules/online_install.sh | sudo bash
+#          required packages, and setting up log rotation.
+# Copyright: (c) 2025 Alejandro Capuro Meyer. All rights reserved.
+# License: GPL v3 - see LICENSE file for details
+# Development: This script was developed with AI assistance (including Gemini,
+#              ChatGPT, Claude, Jules, Firebase, and others) under human
+#              guidance for architecture, logic design, and project direction.
+# File Version: 20250723.160900
+# Project Version: 1.0.0
+# Project Repository: https://github.com/capuromeyer/db_backups
+# Usage: curl -sSL https://raw.githubusercontent.com/capuromeyer/db_backups/jules/online_install.sh | sudo bash
 #
 # Notes:
-#   - Must be run as root or with sudo.
-#   - Assumes a Debian-based system for 'apt' package management.
-#   - Idempotent to some extent (e.g., won't overwrite existing config).
-#   - This script relies on the 'jules' branch of the db_backups repository.
-#     For a production environment, consider cloning a stable release tag or 'main' branch.
-# -----------------------------------------------------------------------------
+# - Must be run as root or with sudo.
+# - Assumes a Debian-based system for 'apt' package management.
+# - Idempotent to some extent (e.g., won't overwrite existing config).
+# - This script relies on the 'jules' branch of the db_backups repository.
+#   For a production environment, consider cloning a stable release tag or the
+#   'main' branch.
+# =============================================================================
 
 set -e
 

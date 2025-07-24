@@ -1,20 +1,24 @@
 #!/bin/bash
-# -----------------------------------------------------------------------------
+# =============================================================================
 # Script: uninstall.sh
-# Purpose: Uninstalls the db_backups tool from the system.
-#          Removes installed scripts, configuration directory, and logrotate file.
-#          Advises on manual removal of data, logs, cron jobs, and dependencies.
-# Author: Alejandro Capuro (Original tool) / Jules (Uninstaller script generation)
-# Copyright: (c) $(date +%Y) Alejandro Capuro. All rights reserved.
-# Version: 0.1.0 (Uninstaller version)
-#
-# Usage:
-#   sudo /usr/local/sbin/db_backups/uninstall.sh
+# Purpose: Uninstalls the db_backups tool from the system. It removes the
+#          installed scripts, configuration directory, and logrotate file, and
+#          advises on the manual removal of data, logs, cron jobs, and
+#          dependencies.
+# Copyright: (c) 2025 Alejandro Capuro Meyer. All rights reserved.
+# License: GPL v3 - see LICENSE file for details
+# Development: This script was developed with AI assistance (including Gemini,
+#              ChatGPT, Claude, Jules, Firebase, and others) under human
+#              guidance for architecture, logic design, and project direction.
+# File Version: 20250723.161500
+# Project Version: 1.0.0
+# Project Repository: https://github.com/capuromeyer/db_backups
+# Usage: sudo /usr/local/sbin/db_backups/uninstall.sh
 #
 # Notes:
-#   - Must be run as root or with sudo.
-#   - Asks for confirmation before proceeding.
-# -----------------------------------------------------------------------------
+# - Must be run as root or with sudo.
+# - Asks for confirmation before proceeding.
+# =============================================================================
 
 # --- Configuration ---
 SCRIPT_INSTALL_DIR="/usr/local/sbin/db_backups"

@@ -1,20 +1,24 @@
 #!/bin/bash
-# -----------------------------------------------------------------------------
+# =============================================================================
 # Script: storage_cloud.sh
 # Purpose: Provides functions for synchronizing local backup files to cloud
 #          storage (AWS S3, Cloudflare R2) and performing cloud-based cleanup.
-# Developed by: Jules (AI Assistant)
-# Copyright: (c) 2025 Alejandro Capuro. All rights reserved.
-# File Version: 20250717.140000
+# Copyright: (c) 2025 Alejandro Capuro Meyer. All rights reserved.
+# License: GPL v3 - see LICENSE file for details
+# Development: This script was developed with AI assistance (including Gemini,
+#              ChatGPT, Claude, Jules, Firebase, and others) under human
+#              guidance for architecture, logic design, and project direction.
+# File Version: 20250723.160100
 # Project Version: 1.0.0
+# Project Repository: https://github.com/capuromeyer/db_backups
+# Usage: This script is intended to be sourced by other scripts (e.g.,
+#        project_list_processor.sh).
 #
 # Notes:
-#   - This script is intended to be sourced by other scripts (e.g., project_list_processor.sh).
-#   - It expects global variables like CLOUD_STORAGE_PROVIDER, S3_BUCKET_NAME,
-#     S3_FULL_PATH, R2_AWS_PROFILE_NAME, and R2_S3CMD_CONFIG_PATH to be set
-#     by the calling environment (typically after project_preflight.sh has run).
-#   - Uses 'aws cli' for cleanup operations and 's3cmd' for sync/upload operations.
-# -----------------------------------------------------------------------------
+# - This script is not meant for direct execution.
+# - It expects several global variables (e.g., CLOUD_STORAGE_PROVIDER,
+#   S3_BUCKET_NAME) to be set by the calling environment.
+# =============================================================================
 
 # --- Logging Helper Function (re-defined for this script's context) ---
 # Function: log_message

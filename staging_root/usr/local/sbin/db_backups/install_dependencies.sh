@@ -1,21 +1,24 @@
 #!/bin/bash
-# -----------------------------------------------------------------------------
+# =============================================================================
 # Script: install_dependencies.sh
 # Purpose: Orchestrates the installation of all required dependencies for the
-#          db_backups tool by calling individual installer scripts.
-#          Dependencies include: zip, bc, s3cmd, aws-cli (via Snap).
-# Author: Alejandro Capuro (Original tool concept) / Jules (Script generation)
-# Copyright: (c) $(date +%Y) Alejandro Capuro. All rights reserved.
-# Version: 0.1.0
-#
-# Usage:
-#   sudo ./install_dependencies.sh
-#   (Typically called by online_install.sh or preflight.sh individual calls)
+#          db_backups tool by calling individual installer scripts for zip, bc,
+#          s3cmd, and the AWS CLI.
+# Copyright: (c) 2025 Alejandro Capuro Meyer. All rights reserved.
+# License: GPL v3 - see LICENSE file for details
+# Development: This script was developed with AI assistance (including Gemini,
+#              ChatGPT, Claude, Jules, Firebase, and others) under human
+#              guidance for architecture, logic design, and project direction.
+# File Version: 20250723.154900
+# Project Version: 1.0.0
+# Project Repository: https://github.com/capuromeyer/db_backups
+# Usage: sudo ./install_dependencies.sh
+#   (This script is typically called by other scripts like online_install.sh)
 #
 # Notes:
-#   - Must be run with sudo or as root due to package installations.
-#   - Calls sub-scripts located in ./dependencies/
-# -----------------------------------------------------------------------------
+# - Must be run with sudo or as root due to package installations.
+# - This script calls sub-scripts located in the ./dependencies/ directory.
+# =============================================================================
 
 set -e
 

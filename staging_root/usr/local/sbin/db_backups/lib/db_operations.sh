@@ -1,17 +1,23 @@
 #!/bin/bash
-# -----------------------------------------------------------------------------
+# =============================================================================
 # Script: db_operations.sh
-# Purpose: Provides functions for performing database-specific operations,
-#          such as dumping databases.
-# Developed by: Jules (AI Assistant)
-# Copyright: (c) 2025 Alejandro Capuro. All rights reserved.
-# File Version: 20250718.140000
+# Purpose: Provides functions for performing database-specific operations, such
+#          as dumping databases. It supports MySQL, MariaDB, PostgreSQL, and
+#          MongoDB.
+# Copyright: (c) 2025 Alejandro Capuro Meyer. All rights reserved.
+# License: GPL v3 - see LICENSE file for details
+# Development: This script was developed with AI assistance (including Gemini,
+#              ChatGPT, Claude, Jules, Firebase, and others) under human
+#              guidance for architecture, logic design, and project direction.
+# File Version: 20250723.155500
 # Project Version: 1.0.0
+# Project Repository: https://github.com/capuromeyer/db_backups
+# Usage: This script is intended to be sourced by other scripts (e.g.,
+#        actual_backup.sh).
 #
 # Notes:
-#   - This script is intended to be sourced by other scripts (e.g., actual_backup.sh).
-#   - It supports MySQL, MariaDB, PostgreSQL, and MongoDB for dumping.
-# -----------------------------------------------------------------------------
+# - This script is not meant for direct execution.
+# =============================================================================
 
 # --- Logging Helper Function ---
 # Function: _log_db_message

@@ -1,16 +1,24 @@
 #!/bin/bash
-# -----------------------------------------------------------------------------
+# =============================================================================
 # Script: check_awscli_config_strict.sh
-# Purpose: Checks if AWS CLI is configured by attempting 'sts get-caller-identity'.
-#          Exits with error if the check fails.
-# Author: Alejandro Capuro (Original tool concept) / Jules (Script generation)
-# Copyright: (c) $(date +%Y) Alejandro Capuro. All rights reserved.
-# Version: 0.1.0
+# Purpose: Checks if the AWS CLI is configured by attempting 'sts get-caller-identity'.
+#          This is a strict check, and the script will exit with an error if the
+#          command fails.
+# Copyright: (c) 2025 Alejandro Capuro Meyer. All rights reserved.
+# License: GPL v3 - see LICENSE file for details
+# Development: This script was developed with AI assistance (including Gemini,
+#              ChatGPT, Claude, Jules, Firebase, and others) under human
+#              guidance for architecture, logic design, and project direction.
+# File Version: 20250723.153900
+# Project Version: 1.0.0
+# Project Repository: https://github.com/capuromeyer/db_backups
+# Usage: This script is intended to be called by other scripts (e.g., preflight checks)
+#        and is not meant for direct execution.
 #
 # Notes:
-#   - Called by preflight.sh when cloud backups are mandatory.
-#   - Exits with status 1 if configuration check fails.
-# -----------------------------------------------------------------------------
+# - This script is used when a valid AWS CLI configuration is mandatory for the
+#   calling process to continue.
+# =============================================================================
 # set -e # Do not set -e here, as we want to capture the exit code of aws command
 
 echo "Performing STRICT check of AWS CLI configuration status..."

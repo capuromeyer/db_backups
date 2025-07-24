@@ -1,7 +1,21 @@
-# Developed by: Alejandro Capuro (Project Lead & Logic Design)
-# Implemented by: Jules (AI Assistant, under guidance)
-
-# lib/workflow_utils.sh: Functions for managing the backup workflow for individual projects.
+#!/bin/bash
+# =============================================================================
+# Script: workflow_utils.sh
+# Purpose: Provides functions for managing the backup workflow for individual
+#          projects.
+# Copyright: (c) 2025 Alejandro Capuro Meyer. All rights reserved.
+# License: GPL v3 - see LICENSE file for details
+# Development: This script was developed with AI assistance (including Gemini,
+#              ChatGPT, Claude, Jules, Firebase, and others) under human
+#              guidance for architecture, logic design, and project direction.
+# File Version: 20250723.160800
+# Project Version: 1.0.0
+# Project Repository: https://github.com/capuromeyer/db_backups
+# Usage: This script is intended to be sourced by other scripts.
+#
+# Notes:
+# - This script is not meant for direct execution.
+# =============================================================================
 
 # Processes a single project configuration file to perform backup based on frequency and preflight checks.
 # Arguments:

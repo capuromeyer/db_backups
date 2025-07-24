@@ -1,22 +1,24 @@
 #!/bin/bash
-# -----------------------------------------------------------------------------
+# =============================================================================
 # Script: preflight.sh
 # Purpose: Performs pre-run checks and setup for the db_backups scripts.
-#          Provides functions for global (one-time) checks and per-project checks.
-# Developed by: Alejandro Capuro (Project Lead & Logic Design)
-# Implemented by: Jules (AI Assistant, under guidance)
-# Copyright: (c) 2025 Alejandro Capuro. All rights reserved.
-# File Version: 20250705.100000
+#          It provides functions for both global (one-time) and per-project
+#          checks.
+# Copyright: (c) 2025 Alejandro Capuro Meyer. All rights reserved.
+# License: GPL v3 - see LICENSE file for details
+# Development: This script was developed with AI assistance (including Gemini,
+#              ChatGPT, Claude, Jules, Firebase, and others) under human
+#              guidance for architecture, logic design, and project direction.
+# File Version: 20250723.161000
 # Project Version: 1.0.0
+# Project Repository: https://github.com/capuromeyer/db_backups
+# Usage: This script is intended to be sourced by other scripts.
 #
 # Notes:
-#   - This script is intended to be sourced.
-#   - It defines functions:
-#     - perform_global_preflight_checks()
-#     - perform_project_preflight_checks()
-#   - Root check should be performed by the calling script BEFORE calling
-#     perform_global_preflight_checks().
-# -----------------------------------------------------------------------------
+# - This script is not meant for direct execution.
+# - The calling script should perform a root check before calling the
+#   `perform_global_preflight_checks()` function.
+# =============================================================================
 
 # PREFLIGHT_SCRIPT_DIR is set to the directory of this script itself.
 PREFLIGHT_SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)

@@ -1,13 +1,24 @@
 #!/bin/bash
-# -----------------------------------------------------------------------------
+# =============================================================================
 # Script: test-runner.sh
-# Purpose: Orchestrates backup 
-# Developed by: Alejandro Capuro (Project Lead & Logic Design)
-# Implemented by: Jules (AI Assistant, under guidance)
-# Copyright: (c) 2025 Alejandro Capuro. All rights reserved.
-# File Version: 20250705.170000
+# Purpose: Orchestrates the backup process for testing purposes. It ensures
+#          root privileges, runs global preflight checks, validates the
+#          manifest file, detects duplicates, and then processes the list of
+#          unique projects.
+# Copyright: (c) 2025 Alejandro Capuro Meyer. All rights reserved.
+# License: GPL v3 - see LICENSE file for details
+# Development: This script was developed with AI assistance (including Gemini,
+#              ChatGPT, Claude, Jules, Firebase, and others) under human
+#              guidance for architecture, logic design, and project direction.
+# File Version: 20250723.161300
 # Project Version: 1.0.0
-# -----------------------------------------------------------------------------
+# Project Repository: https://github.com/capuromeyer/db_backups
+# Usage: sudo ./test-runner.sh
+#
+# Notes:
+# - This script is intended for testing purposes only.
+# - It is hardcoded to run with the "hourly" frequency.
+# =============================================================================
 
 set -euo pipefail
 

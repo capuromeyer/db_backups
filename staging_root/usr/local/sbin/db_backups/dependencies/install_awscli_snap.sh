@@ -1,17 +1,24 @@
 #!/bin/bash
-# -----------------------------------------------------------------------------
+# =============================================================================
 # Script: install_awscli_snap.sh
-# Purpose: Installs AWS CLI (aws-cli) using Snap.
-#          Also installs snapd if it's not already present.
-# Author: Alejandro Capuro (Original tool concept) / Jules (Script generation)
-# Copyright: (c) 2025 Alejandro Capuro. All rights reserved.
-# File Version: 20250702.203000 # Updated timestamp
+# Purpose: Installs the AWS CLI (aws-cli) using the Snap package manager.
+#          If Snap is not already present, the script will attempt to install it.
+# Copyright: (c) 2025 Alejandro Capuro Meyer. All rights reserved.
+# License: GPL v3 - see LICENSE file for details
+# Development: This script was developed with AI assistance (including Gemini,
+#              ChatGPT, Claude, Jules, Firebase, and others) under human
+#              guidance for architecture, logic design, and project direction.
+# File Version: 20250723.154500
 # Project Version: 1.0.0
+# Project Repository: https://github.com/capuromeyer/db_backups
+# Usage: This script is intended to be called by other scripts (e.g., an installer)
+#        and is not meant for direct execution.
 #
 # Notes:
-#   - Requires sudo for apt and snap install commands.
-#   - Idempotent: checks if AWS CLI is already installed.
-# -----------------------------------------------------------------------------
+# - This script is idempotent; it first checks if the AWS CLI is already
+#   installed and will exit if it is.
+# - Requires sudo privileges for apt and snap install commands.
+# =============================================================================
 
 set -e
 

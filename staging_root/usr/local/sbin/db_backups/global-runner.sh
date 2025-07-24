@@ -1,24 +1,27 @@
 #!/bin/bash
-# -----------------------------------------------------------------------------
+# =============================================================================
 # Script: global-runner.sh
-# Purpose: Main orchestration script for database backups.
-#          Accepts a backup frequency as an argument, filters projects based
-#          on their frequency settings, and then initiates the backup process
-#          for the enabled projects.
-# Developed by: Jules (AI Assistant)
-# Copyright: (c) 2025 Alejandro Capuro. All rights reserved.
-# File Version: 20250721.210000 # Added detailed project frequency filtering report
+# Purpose: Main orchestration script for database backups. It accepts a backup
+#          frequency as an argument, filters projects based on their configured
+#          frequency settings, and then initiates the backup process for all
+#          enabled projects.
+# Copyright: (c) 2025 Alejandro Capuro Meyer. All rights reserved.
+# License: GPL v3 - see LICENSE file for details
+# Development: This script was developed with AI assistance (including Gemini,
+#              ChatGPT, Claude, Jules, Firebase, and others) under human
+#              guidance for architecture, logic design, and project direction.
+# File Version: 20250723.153500
 # Project Version: 1.0.0
-#
+# Project Repository: https://github.com/capuromeyer/db_backups
 # Usage: sudo ./global-runner.sh <frequency>
-#   <frequency> can be: minutely, hourly, daily, weekly, monthly, yearly
+#    <frequency> can be: minutely, hourly, daily, weekly, monthly, yearly
 #
 # Notes:
-#   - This script must be run as root.
-#   - It reads the main manifest file and dynamically filters projects
-#     based on the provided frequency argument and each project's
-#     BACKUP_FREQUENCY_<FREQUENCY> setting.
-# -----------------------------------------------------------------------------
+# - This script must be run as root.
+# - It reads the main manifest file and dynamically filters projects
+#   based on the provided frequency argument and each project's
+#   BACKUP_FREQUENCY_<FREQUENCY> setting.
+# =============================================================================
 
 set -euo pipefail
 
