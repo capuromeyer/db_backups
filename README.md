@@ -2,7 +2,7 @@
 
 ## 1. Version
 
-Project Version: **1.0.0**
+Project Version: **1.x**
 
 ## 2. About
 
