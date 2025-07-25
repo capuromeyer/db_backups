@@ -9,7 +9,7 @@
 # Development: This script was developed with AI assistance (including Gemini,
 #              ChatGPT, Claude, Jules, Firebase, and others) under human
 #              guidance for architecture, logic design, and project direction.
-# File Version: 20250723.155500
+# File Version: 20250724.200500
 # Project Repository: https://github.com/capuromeyer/db_backups
 # Usage: This script is intended to be sourced by other scripts (e.g.,
 #        actual_backup.sh).
@@ -96,8 +96,10 @@ perform_dump() {
             # Otherwise, rely on OS user authentication (peer/ident) by running as that user, without -U.
             if [ -n "$db_password" ]; then
                 export PGPASSWORD="$db_password"
+                # IMPORTANT: Use sudo -E to preserve the PGPASSWORD environment variable
+                sudo_prefix="sudo -E" 
                 pg_dump_auth_flags="-U \"$db_user\"" # Explicitly pass DB user when password is used
-                _log_db_message INFO "PGPASSWORD environment variable set for PostgreSQL authentication. Using -U flag."
+                _log_db_message INFO "PGPASSWORD environment variable set for PostgreSQL authentication. Using -E and -U flag."
             else
                 # If no password, attempt to run pg_dump as the specified DB_USER OS user.
                 # For peer/ident, pg_dump will typically default to the OS user for DB user.
